@@ -15,6 +15,12 @@
 # ===============================================================================
 
 import click
+import platform
+
+from render import render_template
+
+IS_MAC = platform.system() == 'Darwin'
+IS_WINDOWS = platform.system() == 'Windows'
 
 
 @click.group()
@@ -36,12 +42,26 @@ def install():
 
 
 @cli.command()
-@click.argument('name')
-def script(name):
-    click.echo('script, {}'.format(name))
-    
+@click.option('--conda', default=False, help='Use the conda package manager')
+def launcher(conda):
+    click.echo('launcher')
+    template = 'failed to make tmplate'
+    if IS_MAC:
+        if conda:
+            template = 'launcher_mac_conda'
+        else:
+            template = 'launcher_mac'
+
+    txt = render_template(template)
+    click.echo(txt)
 
 
+@cli.command()
+def init():
+    click.echo('make initialization file')
+    template = 'initialization.xml'
+    txt = render_template(template)
+    click.echo(txt)
 
 
 if __name__ == '__main__':
