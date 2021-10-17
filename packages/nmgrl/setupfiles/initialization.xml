@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='ASCII'?>
+<root>
+  <globals>
+    <multi_user>true</multi_user>
+    <use_ipc>True</use_ipc>
+    <experiment_debug>false</experiment_debug>
+    <ignore_initialization_warnings>False</ignore_initialization_warnings>
+    <ignore_initialization_questions>False</ignore_initialization_questions>
+    <communication_simulation>False</communication_simulation>
+    <use_startup_tests>True</use_startup_tests>
+    <ignore_initialization_required>False</ignore_initialization_required>
+    <dashboard_simulation>False</dashboard_simulation>
+    <pipeline_debug>False</pipeline_debug>
+    <ignore_connection_warnings>False</ignore_connection_warnings>
+    <valve_debug>False</valve_debug>
+    </globals>
+  <plugins>
+    <general>
+      <plugin enabled="false">Database</plugin>
+      <plugin enabled="false">Loading</plugin>
+      <plugin enabled="false">Processing</plugin>
+      <plugin enabled="false">MediaServer</plugin>
+      <plugin enabled="true">PyScript</plugin>
+      <plugin enabled="true">ArArConstants</plugin>
+      <plugin enabled="true">Entry</plugin>
+      <plugin enabled="true">Update</plugin>
+      <plugin enabled="false">SystemMonitor</plugin>
+      <plugin enabled="false">LabBook</plugin>
+      <plugin enabled="true">Experiment
+         <mode>client</mode>
+        </plugin>
+      <plugin enabled="true">DVC</plugin>
+      <plugin enabled="true">Pipeline</plugin>
+      <plugin enabled="true">MassSpec</plugin>
+      <plugin enabled="true">GitHub</plugin>
+      <plugin enabled="true">LabspyClient</plugin>
+      </general>
+    <hardware>
+      <plugin enabled="true">ClientExtractionLine
+        <runner>
+          <communications>
+            <host>192.168.2.153</host>
+            <port>1061</port>
+            <kind>tcp</kind>
+            <!--<message_frame>L4,-,C4</message_frame>-->
+            </communications>
+          </runner>
+        <manager enabled="true">switch_manager
+          <device enabled="true">switch_controller</device>
+          </manager>
+        <device enabled="false">analog_power_meter
+          <required>false</required>
+          </device>
+        <manager enabled="false">multiplexer_manager
+          <device enabled="true">agilent_multiplexer
+          </device>
+          </manager>
+        </plugin>
+      <plugin enabled="true">ArgusSpectrometer
+        <!-- <device enabled="true">spectrometer_microcontroller
+         <klass>ArgusController</klass>
+        </device> -->
+        </plugin>
+      <plugin enabled="true">FusionsCO2
+        <mode>client</mode>
+        <communications>
+          <host>192.168.2.133</host>
+          <port>1063</port>
+          <kind>TCP</kind>
+          <use_end>True</use_end>
+          <!--
+          <message_frame>L4,-,C4</message_frame>
+ -->
+          </communications>
+        </plugin>
+      <plugin enabled="false">FusionsDiode
+        <mode>client</mode>
+        <communications>
+          <host>host=192.168.2.134</host>
+          <port>8000</port>
+          <kind>TCP</kind>
+          <use_end>True</use_end>
+          <!--
+          <message_frame>L4,-,C4</message_frame>
+ -->
+          </communications>
+        </plugin>
+      <plugin enabled="false">NMGRLFurnace
+        <device enabled="true">camera</device>
+        <device enabled="true">magnets</device>
+        <device enabled="true">funnel</device>
+        <device enabled="true">controller</device>
+        <manager enabled="true">switch_manager
+          <device enabled="true">switch_controller</device>
+          </manager>
+        <manager enabled="true">stage_manager
+          <device enabled="true">feeder</device>
+          </manager>
+        </plugin>
+      </hardware>
+    <data>
+    </data>
+    <social>
+      <plugin enabled="true">Email</plugin>
+      </social>
+    </plugins>
+  </root>
+

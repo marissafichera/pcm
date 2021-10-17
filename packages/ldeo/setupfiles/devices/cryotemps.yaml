@@ -1,0 +1,15 @@
+He_freeze: 14,0
+He_release: 34,0
+He_pump: 75,0
+Ne_freeze: 21,70
+Ne_release: 68,70
+Ne_pump: 150,80
+Ar_freeze: 80,80
+Ar_release: 275,80
+Ar_pump: 350,100
+Kr_freeze: 50,0
+Kr_release: 180,180
+Kr_pump: 300,300
+Xe_freeze: 50,0
+Xe_release: 350,300
+Xe_pump: 400,350
