@@ -33,7 +33,7 @@
             <plugin enabled="false">Query</plugin>
             <plugin enabled="false">GitLab</plugin>
         </general>
-        <hardware>{}
+        <hardware>
         </hardware>
         <social>
         </social>

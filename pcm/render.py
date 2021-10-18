@@ -15,15 +15,18 @@
 # ===============================================================================
 import os
 
+import click
 
-def render_template(template_name):
+
+def render_template(template_name, **ctx):
     root = os.path.abspath(os.path.dirname(__file__))
     p = os.path.join(root, "templates", f"{template_name}.template")
-    print(p, "asdfs")
     if os.path.isfile(p):
         with open(p, "r") as rfile:
             txt = rfile.read()
-            return txt
+            return txt.format(**ctx)
+    else:
+        click.echo('not a valid template')
 
 
 # ============= EOF =============================================

@@ -13,30 +13,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ===============================================================================
+import os
 
-from setuptools import setup, find_packages
+import click
 
-setup(
-    name="pychron-cm",
-    version="0.1.7",
-    install_requires=[
-        "Click",
-    ],
-    entry_points={
-        "console_scripts": [
-            "pcm = pcm.cli:cli",
-        ],
-    },
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "Operating System :: OS Independent",
-    ],
-    packages=["pcm"],
-    python_requires=">=3.6",
-    include_package_data=True,
-    # package_data={
-    #     # If any package contains *.txt or *.rst files, include them:
-    #     "templates": ["*.template",],
-    # }
-)
+
+def yes(msg):
+    if not msg.endswith(" "):
+        msg = "{} ".format(msg)
+
+    return input(msg) in ("", "y", "yes", "Yes", "YES")
+
+
+def make_dir(root, name):
+    for d in (root, os.path.join(root, name)):
+        if not os.path.isdir(d):
+            os.mkdir(d)
+
+
+def write(p, t, overwrite=False, verbose=False):
+    if not os.path.isfile(p) or overwrite:
+        click.echo(f'wrote file: {p}')
+        if verbose:
+            click.secho(f'{p} contents: ==============', fg='blue')
+            click.secho(t, fg='yellow', bg='black')
+            click.secho(f'{p} end: ================================', fg='blue')
+        with open(p, "w") as wfile:
+            wfile.write(t)
+    else:
+        click.secho(f'file already exists skipping: {p}', fg='red')
 # ============= EOF =============================================

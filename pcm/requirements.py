@@ -14,29 +14,37 @@
 # limitations under the License.
 # ===============================================================================
 
-from setuptools import setup, find_packages
-
-setup(
-    name="pychron-cm",
-    version="0.1.7",
-    install_requires=[
-        "Click",
-    ],
-    entry_points={
-        "console_scripts": [
-            "pcm = pcm.cli:cli",
-        ],
-    },
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "Operating System :: OS Independent",
-    ],
-    packages=["pcm"],
-    python_requires=">=3.6",
-    include_package_data=True,
-    # package_data={
-    #     # If any package contains *.txt or *.rst files, include them:
-    #     "templates": ["*.template",],
-    # }
-)
+EDM_REQUIREMENTS = [
+        "chaco",
+        "certifi",
+        "cython",
+        "envisage",
+        "future",
+        "gitpython",
+        "keyring",
+        "jinja2",
+        "lxml",
+        "numpy",
+        "pandas",
+        "patsy",
+        "pillow",
+        "pip",
+        "pyface",
+        "pyparsing",
+        "pyproj",
+        "pymysql",
+        "pyqt5",
+        "pytables",
+        "pyyaml",
+        "pygments",
+        "qt",
+        "Reportlab",
+        "requests",
+        "scipy",
+        "sqlalchemy",
+        "traits",
+        "xlrd",
+        "xlsxwriter",
+        "xlwt",
+    ]
 # ============= EOF =============================================
