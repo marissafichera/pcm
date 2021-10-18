@@ -19,8 +19,8 @@ import platform
 
 from render import render_template
 
-IS_MAC = platform.system() == 'Darwin'
-IS_WINDOWS = platform.system() == 'Windows'
+IS_MAC = platform.system() == "Darwin"
+IS_WINDOWS = platform.system() == "Windows"
 
 
 @click.group()
@@ -29,28 +29,36 @@ def cli():
 
 
 @cli.command()
-@click.option('--template', default=None, help='Device Template to use. Typically the device models name')
-@click.argument('name')
+@click.option(
+    "--template",
+    default=None,
+    help="Device Template to use. Typically the device models name",
+)
+@click.argument("name")
 def device(template, name):
-    click.echo('Create a new device configuration')
+    click.echo("Create a new device configuration")
 
 
 @cli.command()
-@click.option('--app', default=None, help='Application style to install. pycrunch, pyexperiment,...')
+@click.option(
+    "--app",
+    default=None,
+    help="Application style to install. pycrunch, pyexperiment,...",
+)
 def install():
-    click.echo('Install the pychron application')
+    click.echo("Install the pychron application")
 
 
 @cli.command()
-@click.option('--conda', default=False, help='Use the conda package manager')
+@click.option("--conda", default=False, help="Use the conda package manager")
 def launcher(conda):
-    click.echo('launcher')
-    template = 'failed to make tmplate'
+    click.echo("launcher")
+    template = "failed to make tmplate"
     if IS_MAC:
         if conda:
-            template = 'launcher_mac_conda'
+            template = "launcher_mac_conda"
         else:
-            template = 'launcher_mac'
+            template = "launcher_mac"
 
     txt = render_template(template)
     click.echo(txt)
@@ -58,12 +66,12 @@ def launcher(conda):
 
 @cli.command()
 def init():
-    click.echo('make initialization file')
-    template = 'initialization.xml'
+    click.echo("make initialization file")
+    template = "initialization.xml"
     txt = render_template(template)
     click.echo(txt)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli()
 # ============= EOF =============================================

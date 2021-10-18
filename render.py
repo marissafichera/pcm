@@ -18,11 +18,12 @@ import os
 
 def render_template(template_name):
     root = os.path.abspath(os.path.dirname(__file__))
-    p = os.path.join(root, 'templates', f'{template_name}')
+    p = os.path.join(root, "templates", f"{template_name}")
     print(p)
     if os.path.isfile(p):
-        with open(p, 'r') as rfile:
+        with open(p, "r") as rfile:
             txt = rfile.read()
             return txt
+
 
 # ============= EOF =============================================

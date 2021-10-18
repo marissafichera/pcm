@@ -19,10 +19,10 @@ import shutil
 import subprocess
 import sys
 
-IS_MAC = platform.system() == 'Darwin'
-IS_WINDOWS = platform.system() == 'Windows'
+IS_MAC = platform.system() == "Darwin"
+IS_WINDOWS = platform.system() == "Windows"
 
-INITIALIZATION_TXT = '''<root>
+INITIALIZATION_TXT = """<root>
     <globals>
     </globals>
     <plugins>
@@ -68,7 +68,7 @@ INITIALIZATION_TXT = '''<root>
         </data>
     </plugins>
 </root>
-'''
+"""
 
 HARDWARE_PLUGIN_TXT = """
             <plugin enabled="true">ExtractionLine
@@ -77,7 +77,7 @@ HARDWARE_PLUGIN_TXT = """
                 </manager>
             </plugin>"""
 
-DEFAULTS_TXT = '''#script defaults file
+DEFAULTS_TXT = """#script defaults file
 #defines default pyscripts for the analysis types
 #this yaml file returns a dictionary of dictionaries
 #.py does not have to be included for graphic clarity.
@@ -141,11 +141,11 @@ Dg:
  post_measurement:
  extract_value: 0.28
  extract_units: watts
-'''
+"""
 
-SYSTEM_MONITOR_TXT = '''[General]
+SYSTEM_MONITOR_TXT = """[General]
 sample_delay=60
-'''
+"""
 
 MEASUREMENT_TXT = """
 #!Measurement
@@ -518,24 +518,24 @@ valves_path = {valves_path:}
 """
 
 if IS_WINDOWS:
-    GIT = 'C:\\Git\\bin\\git'
+    GIT = "C:\\Git\\bin\\git"
 else:
-    GIT = 'git'
+    GIT = "git"
 
-HOME = os.path.expanduser('~')
-EDM_BIN = os.path.join(HOME, '.edm', 'envs', 'edm', 'bin')
+HOME = os.path.expanduser("~")
+EDM_BIN = os.path.join(HOME, ".edm", "envs", "edm", "bin")
 
 
 def info_header(msg):
-    print('========== {} =========='.format(msg))
+    print("========== {} ==========".format(msg))
 
 
 def critical(msg):
-    print('********** {} **********'.format(msg))
+    print("********** {} **********".format(msg))
 
 
 def welcome():
-    msg = r'''
+    msg = r"""
   _______     _______ _    _ _____   ____  _   _
  |  __ \ \   / / ____| |  | |  __ \ / __ \| \ | |
  | |__) \ \_/ / |    | |__| | |__) | |  | |  \| |
@@ -552,11 +552,11 @@ Welcome to the Pychron Installer.
 
 Hit "Enter" to continue
 
----*---*---*---*---*---*---*---*---*---*---*---*'''
+---*---*---*---*---*---*---*---*---*---*---*---*"""
     print(msg)
     input()
 
-    msg = '''You will be asked to provide a series of configuration values. Each value has as default value, indicated in square
+    msg = """You will be asked to provide a series of configuration values. Each value has as default value, indicated in square
 brackets e.g., [default]
 
 To except the default value hit "Enter" when prompted
@@ -565,31 +565,31 @@ To except the default value hit "Enter" when prompted
 !!!WARNING!!!
 This installer is beta and not guaranteed to work. USE WITH CAUTION
 
-Hit "Enter" to continue'''
+Hit "Enter" to continue"""
     print(msg)
     input()
 
 
 def pre_checks():
-    info_header('Pre Checks')
+    info_header("Pre Checks")
     if IS_MAC:
-        if which('git'):
-            print('Found: Git')
+        if which("git"):
+            print("Found: Git")
         else:
-            critical('Git is Required. Please install manually')
+            critical("Git is Required. Please install manually")
             sys.exit(1)
 
-        if which('conda'):
-            print('Found: Conda')
+        if which("conda"):
+            print("Found: Conda")
         else:
-            critical('Conda is Required. Please install manually')
+            critical("Conda is Required. Please install manually")
             sys.exit(1)
 
-        if which('gcc'):
-            print('Found: XCode Commandline tools')
+        if which("gcc"):
+            print("Found: XCode Commandline tools")
         else:
-            print('XCode Commandline tools required')
-            subprocess.call(['xcode-select', '--install'])
+            print("XCode Commandline tools required")
+            subprocess.call(["xcode-select", "--install"])
 
 
 def which(program):
@@ -601,23 +601,24 @@ def which(program):
         if is_exe(program):
             return program
     else:
-        for path in os.environ['PATH'].split(os.pathsep):
+        for path in os.environ["PATH"].split(os.pathsep):
             exe_file = os.path.join(path, program)
             if is_exe(exe_file):
                 return exe_file
 
 
 def install_edm_only():
-    info_header('Install edm env only')
-    cfg = {'qt_bindings': 'pyqt=5',
-           'qt_api': 'pyqt5',
-           'use_edm': True,
-           'install_gis_plugin': False,
-           # 'conda_distro': os.path.join(os.path.expanduser('~'), 'miniconda3'),
-           # 'edm_env_name': 'pychron-stable',
-           # 'python_version': '3.9'
-           }
-    if yes('Install edm env only [y]/n '):
+    info_header("Install edm env only")
+    cfg = {
+        "qt_bindings": "pyqt=5",
+        "qt_api": "pyqt5",
+        "use_edm": True,
+        "install_gis_plugin": False,
+        # 'conda_distro': os.path.join(os.path.expanduser('~'), 'miniconda3'),
+        # 'edm_env_name': 'pychron-stable',
+        # 'python_version': '3.9'
+    }
+    if yes("Install edm env only [y]/n "):
         # ask(cfg, 'conda_distro', 'Conda Distro Path')
         # ask(cfg, 'conda_env_name', 'Conda environment name')
         # ask(cfg, 'install_gis_plugin', 'Install GIS Plugin')
@@ -626,179 +627,228 @@ def install_edm_only():
 
 
 def install_conda_only():
-    info_header('Install conda env only')
-    cfg = {'qt_bindings': 'pyqt=5',
-           'qt_api': 'pyqt5',
-           'conda_distro': os.path.join(os.path.expanduser('~'), 'miniconda3'),
-           'conda_env_name': 'pychron3gis',
-           'python_version': '3.9'}
-    vv = input('Install conda env only [n]')
-    if vv.lower() in ('y', 'yes'):
-        ask(cfg, 'conda_distro', 'Conda Distro Path')
-        ask(cfg, 'conda_env_name', 'Conda environment name')
-        ask(cfg, 'install_gis_plugin', 'Install GIS Plugin')
+    info_header("Install conda env only")
+    cfg = {
+        "qt_bindings": "pyqt=5",
+        "qt_api": "pyqt5",
+        "conda_distro": os.path.join(os.path.expanduser("~"), "miniconda3"),
+        "conda_env_name": "pychron3gis",
+        "python_version": "3.9",
+    }
+    vv = input("Install conda env only [n]")
+    if vv.lower() in ("y", "yes"):
+        ask(cfg, "conda_distro", "Conda Distro Path")
+        ask(cfg, "conda_env_name", "Conda environment name")
+        ask(cfg, "install_gis_plugin", "Install GIS Plugin")
         build_requirements(cfg)
         return cfg
 
 
 def install_setupfiles_only():
-    info_header('Install Setupfiles only')
+    info_header("Install Setupfiles only")
     cfg = {}
-    if no('Install setup files only y/[n]'):
-        cfg['install_exp_setupfiles'] = True
-        cfg['pychron_data_dir'] = 'PychronUF'
-        cfg['include_hardware_plugins'] = True
+    if no("Install setup files only y/[n]"):
+        cfg["install_exp_setupfiles"] = True
+        cfg["pychron_data_dir"] = "PychronUF"
+        cfg["include_hardware_plugins"] = True
 
     return cfg
 
 
 def ask(cfg, key, msg):
-    default = cfg.get(key, '')
-    vv = input('{} [{}] >> '.format(msg, default))
+    default = cfg.get(key, "")
+    vv = input("{} [{}] >> ".format(msg, default))
     if not vv:
         vv = default
     cfg[key] = vv
 
 
 def yes(msg):
-    if not msg.endswith(' '):
-        msg = '{} '.format(msg)
+    if not msg.endswith(" "):
+        msg = "{} ".format(msg)
 
-    return input(msg) in ('', 'y', 'yes', 'Yes', 'YES')
+    return input(msg) in ("", "y", "yes", "Yes", "YES")
 
 
 def no(msg):
-    if not msg.endswith(' '):
-        msg = '{} '.format(msg)
+    if not msg.endswith(" "):
+        msg = "{} ".format(msg)
 
-    return input(msg).lower() in ('y', 'yes')
+    return input(msg).lower() in ("y", "yes")
 
 
 def ask_config():
-    info_header('Getting User Configuration')
-    YES = ('y', 'yes', 'Y', 'Yes', 'YES')
-    distro = os.path.join(HOME, 'opt', 'miniconda3')
+    info_header("Getting User Configuration")
+    YES = ("y", "yes", "Y", "Yes", "YES")
+    distro = os.path.join(HOME, "opt", "miniconda3")
 
-    config = {'github_org': 'NMGRL',
-              'github_token': '',
-              'install_gh': True,
-              'massspec_db_version': 16,
-              'fork': 'NMGRL',
-              'branch': 'dev/dr',
-              'app_name': 'pycrunch',
-              'qt_bindings': 'pyqt=5',
-              'qt_api': 'pyqt5',
-              'use_all_defaults': 'no',
-              'mac_os_app': False,
-              'mac_app_name': 'Pychron',
-              'app_id': 0,
-              'pychron_data_dir': 'Pychron',
-              'conda_distro': distro,
-              'conda_env_name': 'pychron3',
-              'update_db': 0,
-              'alembic_url': 'mysql+pymysql://<user>:<pwd>@<host>/<db>',
-              'install_gis_plugin': False,
-              'install_exp_setupfiles': False,
-              'include_hardware_plugins': False,
-              'use_edm': True
-              }
+    config = {
+        "github_org": "NMGRL",
+        "github_token": "",
+        "install_gh": True,
+        "massspec_db_version": 16,
+        "fork": "NMGRL",
+        "branch": "dev/dr",
+        "app_name": "pycrunch",
+        "qt_bindings": "pyqt=5",
+        "qt_api": "pyqt5",
+        "use_all_defaults": "no",
+        "mac_os_app": False,
+        "mac_app_name": "Pychron",
+        "app_id": 0,
+        "pychron_data_dir": "Pychron",
+        "conda_distro": distro,
+        "conda_env_name": "pychron3",
+        "update_db": 0,
+        "alembic_url": "mysql+pymysql://<user>:<pwd>@<host>/<db>",
+        "install_gis_plugin": False,
+        "install_exp_setupfiles": False,
+        "include_hardware_plugins": False,
+        "use_edm": True,
+    }
 
-    ask(config, 'use_all_defaults', 'Use all defaults')
-    if config['use_all_defaults'] not in YES:
-        ask(config, 'github_org', 'Github organization')
-        ask(config, 'github_token', 'Github token')
-        ask(config, 'massspec_db_version', 'MassSpec Database Version')
-        ask(config, 'fork', 'Pychron Fork')
-        ask(config, 'branch', 'Pychron Branch')
-        ask(config, 'app_name', 'Pychron Style')
+    ask(config, "use_all_defaults", "Use all defaults")
+    if config["use_all_defaults"] not in YES:
+        ask(config, "github_org", "Github organization")
+        ask(config, "github_token", "Github token")
+        ask(config, "massspec_db_version", "MassSpec Database Version")
+        ask(config, "fork", "Pychron Fork")
+        ask(config, "branch", "Pychron Branch")
+        ask(config, "app_name", "Pychron Style")
         # ask(config, 'qt_bindings', 'Qt Bindings')
-        ask(config, 'use_edm', 'Use EDM instead of Conda')
-        if not config['use_edm']:
-            ask(config, 'conda_distro', 'Conda Distro Path')
-            ask(config, 'conda_env_name', 'Conda environment name')
+        ask(config, "use_edm", "Use EDM instead of Conda")
+        if not config["use_edm"]:
+            ask(config, "conda_distro", "Conda Distro Path")
+            ask(config, "conda_env_name", "Conda environment name")
 
         if IS_MAC:
-            ask(config, 'mac_os_app', 'Make a Mac OS application')
-            if config['mac_os_app'] in YES:
-                config['mac_os_app'] = True
-                ask(config, 'mac_app_name', 'Application name')
+            ask(config, "mac_os_app", "Make a Mac OS application")
+            if config["mac_os_app"] in YES:
+                config["mac_os_app"] = True
+                ask(config, "mac_app_name", "Application name")
 
-        ask(config, 'app_id', 'Application ID')
-        ask(config, 'pychron_data_dir', 'Pychron directory')
+        ask(config, "app_id", "Application ID")
+        ask(config, "pychron_data_dir", "Pychron directory")
 
-        ask(config, 'update_db', 'Update Database automatically')
-        ask(config, 'install_gis_plugin', 'Install GIS Plugin')
-        ask(config, 'install_exp_setupfiles', 'Install Experiment setupfiles')
-        if config['update_db'] in YES:
-            ask(config, 'alembic_url', 'Database URL')
+        ask(config, "update_db", "Update Database automatically")
+        ask(config, "install_gis_plugin", "Install GIS Plugin")
+        ask(config, "install_exp_setupfiles", "Install Experiment setupfiles")
+        if config["update_db"] in YES:
+            ask(config, "alembic_url", "Database URL")
         else:
-            config['alembic_url'] = ''
+            config["alembic_url"] = ""
 
     # echo config
-    print('------------ Config -------------')
+    print("------------ Config -------------")
     for k, v in config.items():
-        print('{:<20s}: {}'.format(k, v))
+        print("{:<20s}: {}".format(k, v))
 
     build_requirements(config)
 
     print()
     print()
-    if yes('Continue? [y]/n >> '):
+    if yes("Continue? [y]/n >> "):
         return config
 
 
 def build_requirements(cfg):
-    pip_reqs = ['chaco']
+    pip_reqs = ["chaco"]
 
     # pip_git_reqs =  ['git+https://github.com/enthought/chaco.git#egg=chaco',
     #                 'git+https://github.com/enthought/enable.git#egg=enable']
     pip_git_reqs = []
 
-    conda_reqs = ['numpy', 'statsmodels', 'scikit-learn', 'PyYAML', 'yaml', 'traits', 'traitsui', 'pyface',
-                  'envisage', 'sqlalchemy', 'Reportlab', 'lxml', 'xlrd', 'xlwt', 'xlsxwriter', 'requests', 'keyring',
-                  'pyparsing', 'pillow', 'gitpython', 'pytables', 'pyproj', 'pymysql', 'certifi', 'jinja2', 'swig=3',
-                  'cython', 'uncertainties', 'qimage2ndarray', 'peakutils', 'pip',
-                  'importlib_resources', cfg['qt_bindings']]
+    conda_reqs = [
+        "numpy",
+        "statsmodels",
+        "scikit-learn",
+        "PyYAML",
+        "yaml",
+        "traits",
+        "traitsui",
+        "pyface",
+        "envisage",
+        "sqlalchemy",
+        "Reportlab",
+        "lxml",
+        "xlrd",
+        "xlwt",
+        "xlsxwriter",
+        "requests",
+        "keyring",
+        "pyparsing",
+        "pillow",
+        "gitpython",
+        "pytables",
+        "pyproj",
+        "pymysql",
+        "certifi",
+        "jinja2",
+        "swig=3",
+        "cython",
+        "uncertainties",
+        "qimage2ndarray",
+        "peakutils",
+        "pip",
+        "importlib_resources",
+        cfg["qt_bindings"],
+    ]
     edm_reqs = [
-        'chaco', 'certifi', 'cython',
-        'envisage',
-        'future',
-        'gitpython',
-        'keyring',
-        'jinja2',
-        'lxml',
-        'numpy',
-        'pandas', 'patsy', 'pillow', 'pip', 'pyface', 'pyparsing', 'pyproj', 'pymysql', 'pyqt5', 'pytables', 'pyyaml',
-        'pygments',
-        'qt',
-        'Reportlab', 'requests',
-        'scipy', 'sqlalchemy',
-        'traits',
-        'xlrd', 'xlsxwriter', 'xlwt',
+        "chaco",
+        "certifi",
+        "cython",
+        "envisage",
+        "future",
+        "gitpython",
+        "keyring",
+        "jinja2",
+        "lxml",
+        "numpy",
+        "pandas",
+        "patsy",
+        "pillow",
+        "pip",
+        "pyface",
+        "pyparsing",
+        "pyproj",
+        "pymysql",
+        "pyqt5",
+        "pytables",
+        "pyyaml",
+        "pygments",
+        "qt",
+        "Reportlab",
+        "requests",
+        "scipy",
+        "sqlalchemy",
+        "traits",
+        "xlrd",
+        "xlsxwriter",
+        "xlwt",
     ]
     if IS_MAC:
-        conda_reqs.append('python.app')
+        conda_reqs.append("python.app")
         # edm_reqs.append('python.app')
 
-    if cfg['install_gis_plugin']:
-        conda_reqs.append('qgis')
+    if cfg["install_gis_plugin"]:
+        conda_reqs.append("qgis")
         # conda_reqs.append('qtkeychain=0.11.1')
 
-    cfg['pip_requirements'] = pip_reqs
-    cfg['pip_git_requirements'] = pip_git_reqs
+    cfg["pip_requirements"] = pip_reqs
+    cfg["pip_git_requirements"] = pip_git_reqs
 
-    cfg['conda_requirements'] = conda_reqs
-    cfg['edm_requirements'] = edm_reqs
+    cfg["conda_requirements"] = conda_reqs
+    cfg["edm_requirements"] = edm_reqs
 
-    print('=========Conda Reqs==============')
-    print(' '.join(conda_reqs))
-    print('=================================')
-    print('=========EDM Reqs==============')
-    print(' '.join(edm_reqs))
-    print('=================================')
-    print('=========PIP Reqs================')
-    print(' '.join(pip_reqs))
-    print('=================================')
+    print("=========Conda Reqs==============")
+    print(" ".join(conda_reqs))
+    print("=================================")
+    print("=========EDM Reqs==============")
+    print(" ".join(edm_reqs))
+    print("=================================")
+    print("=========PIP Reqs================")
+    print(" ".join(pip_reqs))
+    print("=================================")
 
 
 # config['pip_requirements'] = 'uncertainties peakutils qimage2ndarray'
@@ -818,37 +868,35 @@ def build_requirements(cfg):
 
 
 def install_src(cfg):
-    info_header('Install Pychron Source Code')
-    update_root = os.path.join(HOME, '.pychron.{}'.format(cfg['app_id']))
-    ppath = os.path.join(update_root, 'pychron')
+    info_header("Install Pychron Source Code")
+    update_root = os.path.join(HOME, ".pychron.{}".format(cfg["app_id"]))
+    ppath = os.path.join(update_root, "pychron")
 
     if not os.path.isdir(update_root):
         os.mkdir(update_root)
 
-    cfg['update_root'] = update_root
-    cfg['pychron_path'] = ppath
+    cfg["update_root"] = update_root
+    cfg["pychron_path"] = ppath
 
     if os.path.isdir(ppath):
-        if not yes('Pychron source code already exists. Remove and re-clone'):
+        if not yes("Pychron source code already exists. Remove and re-clone"):
             return
 
         shutil.rmtree(ppath)
 
-    url = 'https://github.com/{}/pychron.git'.format(cfg['fork'])
+    url = "https://github.com/{}/pychron.git".format(cfg["fork"])
 
     try:
-        subprocess.call([GIT, 'clone', url,
-                         '--branch={}'.format(cfg['branch']),
-                         ppath])
+        subprocess.call([GIT, "clone", url, "--branch={}".format(cfg["branch"]), ppath])
 
     except BaseException:
-        subprocess.call(['git', 'clone', url,
-                         '--branch={}'.format(cfg['branch']),
-                         ppath])
+        subprocess.call(
+            ["git", "clone", url, "--branch={}".format(cfg["branch"]), ppath]
+        )
 
 
 def install_edm(cfg):
-    if not cfg['use_edm']:
+    if not cfg["use_edm"]:
         return
 
     # cmdargs = ['edm', 'install', 'python', '--version=3.8']
@@ -856,97 +904,127 @@ def install_edm(cfg):
     # print(' '.join(cmdargs))
     # subprocess.call(cmdargs)
     # cmdargs = ['edm', 'install'] + cfg['edm_requirements'] + ['--environment', cfg['edm_env_name']]
-    cmdargs = ['edm', 'install', '-y'] + cfg['edm_requirements']
-    print('edm install')
-    print(' '.join(cmdargs))
+    cmdargs = ["edm", "install", "-y"] + cfg["edm_requirements"]
+    print("edm install")
+    print(" ".join(cmdargs))
     subprocess.call(cmdargs)
-    subprocess.call([os.path.join(EDM_BIN, 'python'), '-m', 'pip', 'install', '--no-dependencies',
-                     'uncertainties', 'statsmodels', 'qimage2ndarray', 'peakutils'])
+    subprocess.call(
+        [
+            os.path.join(EDM_BIN, "python"),
+            "-m",
+            "pip",
+            "install",
+            "--no-dependencies",
+            "uncertainties",
+            "statsmodels",
+            "qimage2ndarray",
+            "peakutils",
+        ]
+    )
 
 
 def install_conda(cfg):
-    if cfg['use_edm']:
+    if cfg["use_edm"]:
         return
 
-    info_header('Install Conda Environment')
+    info_header("Install Conda Environment")
 
     # update base conda
-    subprocess.call(['conda', 'update', '-n', 'base', '--yes', 'conda'])
+    subprocess.call(["conda", "update", "-n", "base", "--yes", "conda"])
 
     # create env
-    env_name = cfg['conda_env_name']
-    subprocess.call(['conda', 'create', '-n', env_name, '--yes', 'python={}'.format(cfg['python_version'])])
+    env_name = cfg["conda_env_name"]
+    subprocess.call(
+        [
+            "conda",
+            "create",
+            "-n",
+            env_name,
+            "--yes",
+            "python={}".format(cfg["python_version"]),
+        ]
+    )
 
     # install deps
     # subprocess.call(['conda', 'create','--name', env_name, '--yes',
     #                  'python=3.8'] + cfg['conda_requirements'])
-    subprocess.call(['conda', 'install', '--yes', '--name', env_name, '-c', 'conda-forge'] + cfg['conda_requirements'])
+    subprocess.call(
+        ["conda", "install", "--yes", "--name", env_name, "-c", "conda-forge"]
+        + cfg["conda_requirements"]
+    )
     # subprocess.call(['conda', 'install', '--yes',
     #                  '--name', env_name, '-c', 'dbanas', 'chaco'])
     if IS_MAC:
         # subprocess.call(['conda', 'activate', env_name])
         # install pip deps
-        pip_path = os.path.join(cfg['conda_distro'], 'envs', env_name, 'bin', 'pip')
+        pip_path = os.path.join(cfg["conda_distro"], "envs", env_name, "bin", "pip")
         # pip_path = 'pip'
-        subprocess.call([pip_path, 'install', '--upgrade-strategy', 'only-if-needed'] + cfg['pip_requirements'])
-        for r in cfg['pip_git_requirements']:
-            subprocess.call([pip_path, 'install', '--upgrade-strategy', 'only-if-needed', '-e', r])
+        subprocess.call(
+            [pip_path, "install", "--upgrade-strategy", "only-if-needed"]
+            + cfg["pip_requirements"]
+        )
+        for r in cfg["pip_git_requirements"]:
+            subprocess.call(
+                [pip_path, "install", "--upgrade-strategy", "only-if-needed", "-e", r]
+            )
     else:
-        print('WARNING!!!! Installing PIP dependencies on Windows currently not available. Please consult Pychron '
-              'documentation or contact Pychron Labs for further instructions')
+        print(
+            "WARNING!!!! Installing PIP dependencies on Windows currently not available. Please consult Pychron "
+            "documentation or contact Pychron Labs for further instructions"
+        )
 
 
 def install_launcher_script(cfg):
-    info_header('Build launcher script')
+    info_header("Build launcher script")
     if IS_WINDOWS:
-        lpath = 'pychron_launcher.bat'
+        lpath = "pychron_launcher.bat"
         txt = LAUNCHER_BAT.format(**cfg)
 
     else:
-        lpath = 'pychron_launcher.sh'
+        lpath = "pychron_launcher.sh"
         base = LAUNCHER_SH
-        if cfg['use_edm']:
-            cfg['EDM_BIN'] = EDM_BIN
+        if cfg["use_edm"]:
+            cfg["EDM_BIN"] = EDM_BIN
             base = EDM_LAUNCHER_SH
 
         txt = base.format(**cfg)
 
-    with open(lpath, 'w') as wfile:
+    with open(lpath, "w") as wfile:
         wfile.write(txt)
 
-    cfg['launcher'] = lpath
+    cfg["launcher"] = lpath
 
 
 def install_github(cfg):
-    if cfg['install_gh']:
-        subprocess.call(['gh', 'auth', 'login'])
+    if cfg["install_gh"]:
+        subprocess.call(["gh", "auth", "login"])
 
 
 def install_app(cfg):
     if IS_MAC:
-        info_header('Install App')
-        launcher = cfg['launcher']
-        if cfg['mac_os_app']:
-            d = os.path.join('{}.app'.format(cfg['mac_app_name']), 'Contents', 'MacOS')
-            subprocess.call(['mkdir', '-p', d])
-            dst = os.path.join(d, cfg['mac_app_name'])
+        info_header("Install App")
+        launcher = cfg["launcher"]
+        if cfg["mac_os_app"]:
+            d = os.path.join("{}.app".format(cfg["mac_app_name"]), "Contents", "MacOS")
+            subprocess.call(["mkdir", "-p", d])
+            dst = os.path.join(d, cfg["mac_app_name"])
             shutil.copy(launcher, dst)
-            subprocess.call(['chmod', '+x', dst])
+            subprocess.call(["chmod", "+x", dst])
 
         else:
-            subprocess.call(['chmod', '+x', launcher])
-            shutil.move(launcher, os.path.join(HOME, 'Desktop', launcher))
+            subprocess.call(["chmod", "+x", launcher])
+            shutil.move(launcher, os.path.join(HOME, "Desktop", launcher))
 
 
 def get_hardware_plugins(cfg):
-    t = ''
-    if cfg['include_hardware_plugins']:
+    t = ""
+    if cfg["include_hardware_plugins"]:
         t = HARDWARE_PLUGIN_TXT
     return t
 
 
 def install_setupfiles(cfg):
-    root = os.path.join(HOME, cfg['pychron_data_dir'])
+    root = os.path.join(HOME, cfg["pychron_data_dir"])
 
     def make_dir(name):
         for d in (root, os.path.join(root, name)):
@@ -955,74 +1033,76 @@ def install_setupfiles(cfg):
 
     def write(p, t):
         if not os.path.isfile(p):
-            with open(p, 'w') as wfile:
+            with open(p, "w") as wfile:
                 wfile.write(t)
 
-    setupfiles = 'setupfiles'
+    setupfiles = "setupfiles"
     make_dir(setupfiles)
 
-    p = os.path.join(root, setupfiles, 'initialization.xml')
+    p = os.path.join(root, setupfiles, "initialization.xml")
     v = INITIALIZATION_TXT.format(get_hardware_plugins(cfg))
     write(p, v)
 
-    if cfg['install_exp_setupfiles']:
-        p = os.path.join(root, setupfiles, 'startup_tests.yaml')
+    if cfg["install_exp_setupfiles"]:
+        p = os.path.join(root, setupfiles, "startup_tests.yaml")
         write(p, STARTUP_TXT)
 
-        p = os.path.join(root, setupfiles, 'experiment_defaults.yaml')
+        p = os.path.join(root, setupfiles, "experiment_defaults.yaml")
         write(p, EXPERIMENT_DEFAULTS)
 
         # Scripts
-        scripts = 'scripts'
+        scripts = "scripts"
         make_dir(scripts)
-        p = os.path.join(root, scripts, 'defaults.yaml')
+        p = os.path.join(root, scripts, "defaults.yaml")
         write(p, DEFAULTS_TXT)
 
-        measurement_args = 'measurement', 'unknown', MEASUREMENT_TXT
-        extraction_args = 'extraction', 'extraction', EXTRACTION_TXT
-        procedure_args = 'procedures', 'procedure', PROCEDURE_TXT
+        measurement_args = "measurement", "unknown", MEASUREMENT_TXT
+        extraction_args = "extraction", "extraction", EXTRACTION_TXT
+        procedure_args = "procedures", "procedure", PROCEDURE_TXT
 
         for name, filename, txt in (measurement_args, extraction_args, procedure_args):
             d = os.path.join(scripts, name)
             make_dir(d)
-            p = os.path.join(root, d, 'example_{}.py'.format(filename))
+            p = os.path.join(root, d, "example_{}.py".format(filename))
             write(p, txt)
 
         # Canvas
-        canvas = os.path.join('setupfiles', 'canvas2D')
+        canvas = os.path.join("setupfiles", "canvas2D")
         make_dir(canvas)
-        canvas_path = os.path.join(root, canvas, 'canvas.yaml')
+        canvas_path = os.path.join(root, canvas, "canvas.yaml")
         write(canvas_path, CANVAS_TXT)
-        p = os.path.join(root, canvas, 'canvas.xml')
+        p = os.path.join(root, canvas, "canvas.xml")
         write(p, CANVAS_XML)
 
-        canvas_config_path = os.path.join(root, canvas, 'canvas_config.xml')
+        canvas_config_path = os.path.join(root, canvas, "canvas_config.xml")
         write(canvas_config_path, CANVAS_CONFIG_TXT)
-        p = os.path.join(root, canvas, 'alt_config.xml')
+        p = os.path.join(root, canvas, "alt_config.xml")
         write(p, CANVAS_CONFIG_TXT)
 
         # Extraction line
-        el = os.path.join('setupfiles', 'extractionline')
+        el = os.path.join("setupfiles", "extractionline")
         make_dir(el)
-        valves_path = os.path.join(root, el, 'valves.yaml')
+        valves_path = os.path.join(root, el, "valves.yaml")
         write(valves_path, SWITCHES_TXT)
 
         # Monitors
-        monitors = os.path.join(setupfiles, 'monitors')
+        monitors = os.path.join(setupfiles, "monitors")
         d = os.path.join(root, monitors)
         make_dir(d)
 
-        p = os.path.join(d, 'system_monitor.cfg')
+        p = os.path.join(d, "system_monitor.cfg")
         write(p, SYSTEM_MONITOR_TXT)
 
         # Make preferences
 
-        v = EXTRACTION_LINE_PREFERENCES.format(canvas_path=canvas_path,
-                                               canvas_config_path=canvas_config_path,
-                                               valves_path=valves_path)
-        d = os.path.join(root, 'preferences')
+        v = EXTRACTION_LINE_PREFERENCES.format(
+            canvas_path=canvas_path,
+            canvas_config_path=canvas_config_path,
+            valves_path=valves_path,
+        )
+        d = os.path.join(root, "preferences")
         make_dir(d)
-        p = os.path.join(d, 'extractionline.ini')
+        p = os.path.join(d, "extractionline.ini")
         write(p, v)
 
 
@@ -1044,27 +1124,30 @@ def main():
             cfg = ask_config()
             if cfg:
 
-                for func in (install_src,
-                             install_setupfiles,
-                             install_edm,
-                             install_conda,
-                             install_launcher_script, install_app,
-                             install_github):
+                for func in (
+                    install_src,
+                    install_setupfiles,
+                    install_edm,
+                    install_conda,
+                    install_launcher_script,
+                    install_app,
+                    install_github,
+                ):
                     try:
                         func(cfg)
                     except BaseException as e:
-                        print('function failed: ', func)
+                        print("function failed: ", func)
                         print(e)
-                        if yes('Continue? [y]/n'):
-                            print('installation stopped')
+                        if yes("Continue? [y]/n"):
+                            print("installation stopped")
                             break
 
                 print()
-                print('Installation Complete!')
+                print("Installation Complete!")
             else:
-                print('Failed getting configuration. Exiting')
+                print("Failed getting configuration. Exiting")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
 # ============= EOF =============================================
