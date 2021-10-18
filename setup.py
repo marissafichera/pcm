@@ -17,22 +17,22 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='pychron-cm',
-    version='0.1.6',
-    py_modules=['cli'],
+    name="pychron-cm",
+    version="0.1.6",
+    py_modules=["cli"],
     install_requires=[
-        'Click',
+        "Click",
     ],
     entry_points={
-        'console_scripts': [
-            'cli = pcm.cli:cli',
+        "console_scripts": [
+            "cli = pcm.cli:cli",
         ],
     },
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    packages=['pcm'],
+    packages=["pcm"],
     python_requires=">=3.6",
     include_package_data=True,
     # package_data={
