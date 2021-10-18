@@ -134,15 +134,20 @@ def _edm(environment, verbose):
     click.secho("edm install", bold=True, fg="green")
     req = requirements.EDM_REQUIREMENTS
     cmdargs = ["edm", "install", "-y"] + req
+    active_python = os.path.join(HOME, '.edm')
     if environment:
+        active_python = os.path.join(active_python, 'envs', environment, 'bin', 'python')
         cmdargs.extend(["--environment", environment])
+    else:
+        active_python = os.path.join(active_python, 'bin', 'python')
+
     if verbose:
         click.echo(f'requirements: {" ".join(req)}')
         click.echo(f'command: {" ".join(cmdargs)}')
     subprocess.call(cmdargs)
     subprocess.call(
         [
-            os.path.join(EDM_BIN, "python"),
+            active_python,
             "-m",
             "pip",
             "install",
