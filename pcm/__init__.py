@@ -13,17 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ===============================================================================
-import os
-
-
-def render_template(template_name):
-    root = os.path.abspath(os.path.dirname(__file__))
-    p = os.path.join(root, "templates", f"{template_name}")
-    print(p)
-    if os.path.isfile(p):
-        with open(p, "r") as rfile:
-            txt = rfile.read()
-            return txt
 
 
 # ============= EOF =============================================
