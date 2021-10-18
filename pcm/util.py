@@ -33,13 +33,15 @@ def make_dir(root, name):
 
 def write(p, t, overwrite=False, verbose=False):
     if not os.path.isfile(p) or overwrite:
-        click.echo(f'wrote file: {p}')
+        click.echo(f"wrote file: {p}")
         if verbose:
-            click.secho(f'{p} contents: ==============', fg='blue')
-            click.secho(t, fg='yellow', bg='black')
-            click.secho(f'{p} end: ================================', fg='blue')
+            click.secho(f"{p} contents: ==============", fg="blue")
+            click.secho(t, fg="yellow", bg="black")
+            click.secho(f"{p} end: ================================", fg="blue")
         with open(p, "w") as wfile:
             wfile.write(t)
     else:
-        click.secho(f'file already exists skipping: {p}', fg='red')
+        click.secho(f"file already exists skipping: {p}", fg="red")
+
+
 # ============= EOF =============================================
