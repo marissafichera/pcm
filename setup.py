@@ -22,11 +22,11 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="pychron-cm",
     version="0.1.8",
-    author='Jake Ross',
+    author="Jake Ross",
     description="Pychron configuration manager",
     long_description=long_description,
-    long_description_content_type='text/markdown',
-    url='https://github.com/PychronLabsLLC/pcm',
+    long_description_content_type="text/markdown",
+    url="https://github.com/PychronLabsLLC/pcm",
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
@@ -39,7 +39,6 @@ setup(
             "pcm = pcm.cli:cli",
         ],
     },
-
     packages=["pcm"],
     python_requires=">=3.6",
     include_package_data=True,
