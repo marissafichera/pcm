@@ -155,7 +155,6 @@ def _edm(environment, verbose):
             "install",
             "--no-dependencies",
             "uncertainties",
-            "statsmodels",
             "qimage2ndarray",
             "peakutils",
         ]

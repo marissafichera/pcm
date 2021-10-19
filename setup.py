@@ -16,9 +16,21 @@
 
 from setuptools import setup, find_packages
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(
     name="pychron-cm",
-    version="0.1.7",
+    version="0.1.8",
+    author='Jake Ross',
+    description="Pychron configuration manager",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    url='https://github.com/PychronLabsLLC/pcm',
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "Operating System :: OS Independent",
+    ],
     install_requires=[
         "Click",
     ],
@@ -27,10 +39,7 @@ setup(
             "pcm = pcm.cli:cli",
         ],
     },
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "Operating System :: OS Independent",
-    ],
+
     packages=["pcm"],
     python_requires=">=3.6",
     include_package_data=True,
