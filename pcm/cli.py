@@ -27,7 +27,8 @@ from pcm import requirements
 IS_MAC = platform.system() == "Darwin"
 IS_WINDOWS = platform.system() == "Windows"
 HOME = os.path.expanduser("~")
-EDM_BIN = os.path.join(HOME, ".edm", "envs", "edm", "bin")
+EDM_ENVS_ROOT = os.path.join(HOME, ".edm", "envs")
+EDM_BIN = os.path.join(EDM_ENVS_ROOT, "edm", "bin")
 
 if IS_WINDOWS:
     GIT = "C:\\Git\\bin\\git"
@@ -294,7 +295,7 @@ def _launcher(
         "app_id": app_id,
         "use_login": login,
         "massspec_db_version": msv,
-        "edm_bin": EDM_BIN,
+        "edm_envs_root": EDM_ENVS_ROOT,
         "edm_env": environment,
         "pychron_path": os.path.join(HOME, f".pychron.{app_id}", "pychron"),
     }
