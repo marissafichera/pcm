@@ -47,5 +47,6 @@ EDM_REQUIREMENTS = [
     "xlsxwriter",
     "xlwt",
     "statsmodels",
+    "utm"
 ]
 # ============= EOF =============================================
