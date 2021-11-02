@@ -28,14 +28,24 @@ from pcm.cli import HOME, GIT, IS_MAC, EDM_ENVS_ROOT
 
 def _login(env, app_id):
     # write the user
-    root = os.path.join(HOME, f'.pychron.{app_id}')
-    user_file = os.path.join(root, 'users.yaml')
-    t = {'users': ['root', ], 'last_login': 'root'}
+    root = os.path.join(HOME, f".pychron.{app_id}")
+    user_file = os.path.join(root, "users.yaml")
+    t = {
+        "users": [
+            "root",
+        ],
+        "last_login": "root",
+    }
     util.write(user_file, t, yaml.dumps(t))
 
-    environment_file = os.path.join(root, 'environments.yaml')
+    environment_file = os.path.join(root, "environments.yaml")
     pe = os.path.join(HOME, env)
-    t = {'env': pe, 'envs': [pe, ]}
+    t = {
+        "env": pe,
+        "envs": [
+            pe,
+        ],
+    }
     util.write(environment_file, yaml.dumps(t))
 
 
@@ -94,10 +104,10 @@ def _setupfiles(env, overwrite, verbose):
         util.write(p, txt, overwrite)
 
     for d, ps in (
-            ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml")),
-            ("extractionline", ("valves.yaml",)),
-            ("monitors", ("system_monitor.cfg",)),
-            ("", ("startup_tests.yaml", "experiment_defaults.yaml")),
+        ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml")),
+        ("extractionline", ("valves.yaml",)),
+        ("monitors", ("system_monitor.cfg",)),
+        ("", ("startup_tests.yaml", "experiment_defaults.yaml")),
     ):
         if d:
             out = os.path.join(sf, d)
@@ -130,7 +140,7 @@ def _code(fork, branch, app_id):
 
     if os.path.isdir(ppath):
         if not util.yes(
-                "Pychron source code already exists. Remove and re-clone [y]/n"
+            "Pychron source code already exists. Remove and re-clone [y]/n"
         ):
             subprocess.call(["cd", ppath])
             subprocess.call([GIT, "status"])
@@ -146,7 +156,7 @@ def _code(fork, branch, app_id):
 
 
 def _launcher(
-        conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
+    conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
 ):
     click.echo("launcher")
     template = "failed to make tmplate"
@@ -197,16 +207,22 @@ def _init(env, org, overwrite, verbose):
     d = os.path.join(root, "preferences")
     util.make_dir(root, "preferences")
 
-    template = 'general.ini.template'
-    txt = render.render_template(template, general_organization=org,
-                                 general_remote='{}/Laboratory')
-    p = os.path.join(d, 'general.ini')
+    template = "general.ini.template"
+    txt = render.render_template(
+        template, general_organization=org, general_remote="{}/Laboratory"
+    )
+    p = os.path.join(d, "general.ini")
     util.write(p, txt, overwrite=overwrite)
 
-    template = 'update.ini.template'
-    txt = render.render_template(template, build_repo=os.path.join(HOME, '.pychron.0', 'pychron'),
-                                 build_remote='PychronLabsLLC/pychron',
-                                 build_branch='dev/dr')
-    p = os.path.join(d, 'update.ini')
+    template = "update.ini.template"
+    txt = render.render_template(
+        template,
+        build_repo=os.path.join(HOME, ".pychron.0", "pychron"),
+        build_remote="PychronLabsLLC/pychron",
+        build_branch="dev/dr",
+    )
+    p = os.path.join(d, "update.ini")
     util.write(p, txt, overwrite=overwrite)
+
+
 # ============= EOF =============================================

@@ -61,7 +61,9 @@ def device(template, name):
     "--fork", default="PychronLabsLLC", help="Name of the pychron fork to clone"
 )
 @click.option(
-    "--org", default="NMGRL", help="Github organization for storing laboratory files such as Plot Options"
+    "--org",
+    default="NMGRL",
+    help="Github organization for storing laboratory files such as Plot Options",
 )
 @click.option("--branch", default="dev/dr", help="Name of the pychron fork to clone")
 @click.option(
@@ -88,7 +90,9 @@ def device(template, name):
     help="make a launcher script",
 )
 @click.option("--app_id", default=0, help="set the app id")
-@click.option("--use_login/--no-use_login", default=True, help="Write default login files")
+@click.option(
+    "--use_login/--no-use_login", default=True, help="Write default login files"
+)
 @click.option("--login/--no-login", default=0, help="show login window at startup")
 @click.option(
     "--massspec_db_version", "msv", default=16, help="massspec database version"
@@ -98,24 +102,24 @@ def device(template, name):
 )
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
 def wizard(
-        app,
-        conda,
-        use_src,
-        app_id,
-        fork,
-        org,
-        branch,
-        use_setupfiles,
-        use_init,
-        env,
-        use_edm,
-        environment,
-        use_launcher,
-        use_login,
-        login,
-        msv,
-        overwrite,
-        verbose,
+    app,
+    conda,
+    use_src,
+    app_id,
+    fork,
+    org,
+    branch,
+    use_setupfiles,
+    use_init,
+    env,
+    use_edm,
+    environment,
+    use_launcher,
+    use_login,
+    login,
+    msv,
+    overwrite,
+    verbose,
 ):
     click.secho("Install the pychron application", bold="True", fg="green")
     if use_src:
@@ -187,7 +191,7 @@ def code(fork, branch, app_id):
 )
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
 def launcher(
-        conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
+    conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
 ):
     _launcher(
         conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
@@ -196,7 +200,11 @@ def launcher(
 
 @cli.command()
 @click.option("--env", default="Pychron", help="Environment, aka root directory name")
-@click.option("--org", default="NMGRL", help="Github organization for storing laboratory files such as Plot Options")
+@click.option(
+    "--org",
+    default="NMGRL",
+    help="Github organization for storing laboratory files such as Plot Options",
+)
 @click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
