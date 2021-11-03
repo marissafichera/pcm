@@ -225,10 +225,9 @@ def _init(env, org, overwrite, verbose):
     util.write(p, txt, overwrite=overwrite)
 
     template = "arar_constants.ini.template"
-    txt = render.render_template(
-        template
-    )
+    txt = render.render_template(template)
     p = os.path.join(d, "arar_constants.ini")
     util.write(p, txt, overwrite=overwrite)
+
 
 # ============= EOF =============================================
