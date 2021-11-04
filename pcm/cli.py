@@ -110,6 +110,7 @@ def wizard(
     overwrite,
     verbose,
 ):
+
     click.secho("Install the pychron application", bold="True", fg="green")
     if use_src:
         _code(fork, branch, app_id)

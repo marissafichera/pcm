@@ -21,7 +21,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="pychron-cm",
-    version="0.3.4",
+    version="0.3.5",
     author="Jake Ross",
     description="Pychron configuration manager",
     long_description=long_description,

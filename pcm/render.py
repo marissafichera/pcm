@@ -26,7 +26,7 @@ def render_template(template_name, **ctx):
             txt = rfile.read()
             return txt.format(**ctx)
     else:
-        click.echo("not a valid template")
+        click.echo(f"{p} not a valid template")
 
 
 # ============= EOF =============================================

@@ -200,7 +200,7 @@ def _launcher(
 
 def _init(env, org, overwrite, verbose):
     click.echo("make initialization file")
-    template = "initialization.xml.template"
+    template = "initialization.xml"
     txt = render.render_template(template)
     if verbose:
         click.echo("======== Initialization.xml contents start ========")
@@ -217,14 +217,14 @@ def _init(env, org, overwrite, verbose):
     d = os.path.join(root, "preferences")
     util.make_dir(root, "preferences")
 
-    template = "general.ini.template"
+    template = "general.ini"
     txt = render.render_template(
         template, general_organization=org, general_remote="{}/Laboratory"
     )
     p = os.path.join(d, "general.ini")
     util.write(p, txt, overwrite=overwrite)
 
-    template = "update.ini.template"
+    template = "update.ini"
     txt = render.render_template(
         template,
         build_repo=os.path.join(HOME, ".pychron.0", "pychron"),
@@ -234,7 +234,7 @@ def _init(env, org, overwrite, verbose):
     p = os.path.join(d, "update.ini")
     util.write(p, txt, overwrite=overwrite)
 
-    template = "arar_constants.ini.template"
+    template = "arar_constants.ini"
     txt = render.render_template(template)
     p = os.path.join(d, "arar_constants.ini")
     util.write(p, txt, overwrite=overwrite)
