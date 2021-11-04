@@ -154,8 +154,7 @@ def _code(fork, branch, app_id):
         if not util.yes(
             "Pychron source code already exists. Remove and re-clone [y]/n"
         ):
-            subprocess.call(["cd", ppath])
-            subprocess.call([GIT, "status"])
+            subprocess.call([GIT, "status"], cwd=ppath)
             return
 
         shutil.rmtree(ppath)
@@ -163,8 +162,7 @@ def _code(fork, branch, app_id):
     url = f"https://github.com/{fork}/pychron.git"
 
     subprocess.call([GIT, "clone", url, f"--branch={branch}", ppath])
-    subprocess.call(["cd", ppath])
-    subprocess.call([GIT, "status"])
+    subprocess.call([GIT, "status"], cwd=ppath)
 
 
 def _launcher(
@@ -202,7 +200,7 @@ def _launcher(
 
 def _init(env, org, overwrite, verbose):
     click.echo("make initialization file")
-    template = "initialization.xml"
+    template = "initialization.xml.template"
     txt = render.render_template(template)
     if verbose:
         click.echo("======== Initialization.xml contents start ========")
