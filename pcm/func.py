@@ -88,7 +88,7 @@ def _edm(environment, verbose):
             "uncertainties",
             "qimage2ndarray",
             "peakutils",
-            "utm"
+            "utm",
         ]
     )
 
