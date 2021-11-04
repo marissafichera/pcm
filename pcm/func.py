@@ -18,12 +18,24 @@
 import os
 import shutil
 import subprocess
+import platform
 
 import click
 import yaml
 
 from pcm import util, requirements, render
-from pcm.cli import HOME, GIT, IS_MAC, EDM_ENVS_ROOT
+
+IS_MAC = platform.system() == "Darwin"
+IS_WINDOWS = platform.system() == "Windows"
+HOME = os.path.expanduser("~")
+EDM_ENVS_ROOT = os.path.join(HOME, ".edm", "envs")
+EDM_BIN = os.path.join(EDM_ENVS_ROOT, "edm", "bin")
+
+
+if IS_WINDOWS:
+    GIT = "C:\\Git\\bin\\git"
+else:
+    GIT = "git"
 
 
 def _login(env, app_id):
