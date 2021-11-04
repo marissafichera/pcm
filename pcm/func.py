@@ -48,7 +48,7 @@ def _login(env, app_id):
         ],
         "last_login": "root",
     }
-    util.write(user_file, yaml.dumps(t))
+    util.write(user_file, yaml.dump(t))
 
     environment_file = os.path.join(root, "environments.yaml")
     pe = os.path.join(HOME, env)
@@ -58,7 +58,7 @@ def _login(env, app_id):
             pe,
         ],
     }
-    util.write(environment_file, yaml.dumps(t))
+    util.write(environment_file, yaml.dump(t))
 
 
 def _edm(environment, verbose):
@@ -197,6 +197,9 @@ def _launcher(
         click.echo(f"Writing launcher script: {output}")
         click.echo(txt)
     util.write(output, txt, overwrite)
+
+    # make launcher executable
+    subprocess.call(['chmod', '+x', output])
 
 
 def _init(env, org, overwrite, verbose):
