@@ -22,7 +22,6 @@ jobs:
         run: >-
           python -m
           build
-          --bdist
           --wheel
           --outdir dist/
           .
