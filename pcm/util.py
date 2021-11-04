@@ -45,10 +45,10 @@ def write(p, t, overwrite=False, verbose=False):
 
 
 def echo_config(*args):
-    click.secho('------------ Configuration -------------', fg='yellow')
+    click.secho("------------ Configuration -------------", fg="yellow")
     for a in args:
-        click.secho(f"={a}", fg='yellow')
-    click.secho('------------ Configuration End -------------', fg='yellow')
+        click.secho(f"={a}", fg="yellow")
+    click.secho("------------ Configuration End -------------", fg="yellow")
 
 
 # ============= EOF =============================================
