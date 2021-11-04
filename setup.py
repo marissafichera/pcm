@@ -41,7 +41,7 @@ setup(
     python_requires=">=3.6",
     include_package_data=True,
     # package_data={
-        # If any package contains *.txt or *.rst files, include them:
+    # If any package contains *.txt or *.rst files, include them:
     #     "templates": [
     #         "*.template",
     #     ],

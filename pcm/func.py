@@ -199,7 +199,7 @@ def _launcher(
     util.write(output, txt, overwrite)
 
     # make launcher executable
-    subprocess.call(['chmod', '+x', output])
+    subprocess.call(["chmod", "+x", output])
 
 
 def _init(env, org, overwrite, verbose):
