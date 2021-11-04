@@ -22,7 +22,7 @@ jobs:
         run: >-
           python -m
           build
-          --sdist
+          --bdist
           --wheel
           --outdir dist/
           .
