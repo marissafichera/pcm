@@ -31,10 +31,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    install_requires=[
-        "Click",
-        "pyyaml"
-    ],
+    install_requires=["Click", "pyyaml"],
     entry_points={
         "console_scripts": [
             "pcm = pcm.cli:cli",
