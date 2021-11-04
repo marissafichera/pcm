@@ -48,7 +48,7 @@ def _login(env, app_id):
         ],
         "last_login": "root",
     }
-    util.write(user_file, t, yaml.dumps(t))
+    util.write(user_file, yaml.dumps(t))
 
     environment_file = os.path.join(root, "environments.yaml")
     pe = os.path.join(HOME, env)
