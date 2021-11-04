@@ -21,7 +21,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="pychron-cm",
-    version="0.3.10",
+    version="0.3.11",
     author="Jake Ross",
     description="Pychron configuration manager",
     long_description=long_description,
@@ -39,9 +39,9 @@ setup(
     },
     packages=["pcm"],
     python_requires=">=3.6",
-    # include_package_data=True,
+    include_package_data=True,
     # package_data={
-    #     # If any package contains *.txt or *.rst files, include them:
+        # If any package contains *.txt or *.rst files, include them:
     #     "templates": [
     #         "*.template",
     #     ],
