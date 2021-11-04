@@ -40,9 +40,9 @@ setup(
     packages=["pcm"],
     python_requires=">=3.6",
     include_package_data=True,
-    # package_data={
-    #     # If any package contains *.txt or *.rst files, include them:
-    #     "templates": ["*.template",],
-    # }
+    package_data={
+        # If any package contains *.txt or *.rst files, include them:
+        "templates": ["*.template",],
+    }
 )
 # ============= EOF =============================================

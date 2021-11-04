@@ -19,6 +19,7 @@ import click
 import platform
 
 from pcm.func import _login, _edm, _setupfiles, _code, _launcher, _init
+from pcm.util import echo_config
 
 
 @click.group()
@@ -110,7 +111,24 @@ def wizard(
     overwrite,
     verbose,
 ):
-
+    echo_config(app,
+    conda,
+    use_src,
+    app_id,
+    fork,
+    org,
+    branch,
+    use_setupfiles,
+    use_init,
+    env,
+    use_edm,
+    environment,
+    use_launcher,
+    use_login,
+    login,
+    msv,
+    overwrite,
+    verbose)
     click.secho("Install the pychron application", bold="True", fg="green")
     if use_src:
         _code(fork, branch, app_id)

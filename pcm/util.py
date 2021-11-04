@@ -44,4 +44,11 @@ def write(p, t, overwrite=False, verbose=False):
         click.secho(f"file already exists skipping: {p}", fg="red")
 
 
+def echo_config(*args):
+    click.secho('------------ Configuration -------------', fg='yellow')
+    for a in args:
+        click.secho(f"={a}", fg='yellow')
+    click.secho('------------ Configuration End -------------', fg='yellow')
+
+
 # ============= EOF =============================================
