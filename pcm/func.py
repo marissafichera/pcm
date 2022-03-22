@@ -89,7 +89,7 @@ def _edm(environment, verbose):
             "qimage2ndarray",
             "peakutils",
             "utm",
-            "pymysql"
+            "pymysql",
         ]
     )
 
