@@ -32,7 +32,7 @@ EDM_REQUIREMENTS = [
     "pyface",
     "pyparsing",
     "pyproj",
-    "pymysql",
+    # "pymysql", #edm install 0.7.9 version 1.0.2 or greater required. used pip
     "pyqt5",
     "pytables",
     "pyyaml",
