@@ -63,13 +63,12 @@ def _login(env, app_id):
 def _edm(environment, app, verbose):
     click.secho("edm install", bold=True, fg="green")
     req = requirements.EDM_REQUIREMENTS
-    pip_req = ["uncertainties",
-               "qimage2ndarray", "pymysql" ]
+    pip_req = ["uncertainties", "qimage2ndarray", "pymysql"]
 
-    if app == 'pyvalve':
-        req.extend(['pyserial', 'twisted'])
+    if app == "pyvalve":
+        req.extend(["pyserial", "twisted"])
     else:
-        pip_req.extend(['peakutils', 'utm'])
+        pip_req.extend(["peakutils", "utm"])
 
     cmdargs = ["edm", "install", "-y"] + req
     active_python = os.path.join(HOME, ".edm")
@@ -93,7 +92,8 @@ def _edm(environment, app, verbose):
             "pip",
             "install",
             "--no-dependencies",
-        ]+pip_req
+        ]
+        + pip_req
     )
 
 
@@ -121,10 +121,10 @@ def _setupfiles(env, overwrite, verbose):
         util.write(p, txt, overwrite)
 
     for d, ps in (
-            ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml")),
-            ("extractionline", ("valves.yaml",)),
-            ("monitors", ("system_monitor.cfg",)),
-            ("", ("startup_tests.yaml", "experiment_defaults.yaml")),
+        ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml")),
+        ("extractionline", ("valves.yaml",)),
+        ("monitors", ("system_monitor.cfg",)),
+        ("", ("startup_tests.yaml", "experiment_defaults.yaml")),
     ):
         if d:
             out = os.path.join(sf, d)
@@ -157,7 +157,7 @@ def _code(fork, branch, app_id):
 
     if os.path.isdir(ppath):
         if not util.yes(
-                "Pychron source code already exists. Remove and re-clone [y]/n"
+            "Pychron source code already exists. Remove and re-clone [y]/n"
         ):
             subprocess.call([GIT, "status"], cwd=ppath)
             return
@@ -171,7 +171,7 @@ def _code(fork, branch, app_id):
 
 
 def _launcher(
-        conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
+    conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
 ):
     click.echo("launcher")
     template = "failed to make tmplate"
@@ -246,5 +246,6 @@ def _init(env, org, overwrite, verbose):
     txt = render.render_template(template)
     p = os.path.join(d, "arar_constants.ini")
     util.write(p, txt, overwrite=overwrite)
+
 
 # ============= EOF =============================================
