@@ -142,7 +142,7 @@ def wizard(
         _setupfiles(env, overwrite, verbose)
 
     if use_edm:
-        _edm(environment, verbose)
+        _edm(environment, app, verbose)
 
     if use_launcher:
         _launcher(
@@ -162,9 +162,14 @@ def login(env, app_id):
 
 @cli.command()
 @click.option("--environment", default=None, help="Name of the EDM environment")
+@click.option(
+    "--app",
+    default="pycrunch",
+    help="Application style to install. pycrunch, pyexperiment,...",
+)
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
-def edm(environment, verbose):
-    _edm(environment, verbose)
+def edm(environment, app, verbose):
+    _edm(environment, app, verbose)
 
 
 @cli.command()
