@@ -18,7 +18,7 @@ import os
 import click
 import platform
 
-from pcm.func import _login, _edm, _setupfiles, _code, _launcher, _init
+from pcm.func import _login, _edm, _setupfiles, _code, _launcher, _init, _email
 from pcm.util import echo_config
 
 
@@ -226,6 +226,14 @@ def launcher(
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
 def init(env, org, overwrite, verbose):
     _init(env, org, overwrite, verbose)
+
+@cli.command()
+@click.option("--env", default="Pychron", help="Environment, aka root directory name")
+@click.option(
+    "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
+)
+def email(env, overwrite):
+    _email(env, overwrite)
 
 
 if __name__ == "__main__":
