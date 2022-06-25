@@ -61,4 +61,5 @@ def echo_config(*args):
         click.secho(f"={a}", fg="yellow")
     click.secho("------------ Configuration End -------------", fg="yellow")
 
+
 # ============= EOF =============================================

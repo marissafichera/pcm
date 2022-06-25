@@ -18,7 +18,16 @@ import os
 import click
 import platform
 
-from pcm.func import _login, _edm, _setupfiles, _code, _launcher, _init, _email, _scripts
+from pcm.func import (
+    _login,
+    _edm,
+    _setupfiles,
+    _code,
+    _launcher,
+    _init,
+    _email,
+    _scripts,
+)
 from pcm.util import echo_config
 
 
@@ -185,6 +194,7 @@ def edm(environment, app, verbose):
 def setupfiles(env, use_ngx, overwrite, verbose):
     _setupfiles(env, use_ngx, overwrite, verbose)
 
+
 @cli.command()
 @click.option("--env", default="Pychron", help="Environment, aka root directory name")
 @click.option("--use_ngx/--no-ngx", default=False, help="Install NGX")
@@ -194,6 +204,7 @@ def setupfiles(env, use_ngx, overwrite, verbose):
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
 def scripts(env, use_ngx, overwrite, verbose):
     _scripts(env, use_ngx, overwrite, verbose)
+
 
 @cli.command()
 @click.option("--env", default="Pychron", help="Environment, aka root directory name")
@@ -211,6 +222,7 @@ def buildenv(env, org, use_ngx, overwrite, verbose):
     _init(env, org, use_ngx, overwrite, verbose)
     _setupfiles(env, use_ngx, overwrite, verbose)
     _scripts(env, use_ngx, overwrite, verbose)
+
 
 @cli.command()
 @click.option("--fork", help="Name of the pychron fork to clone")
