@@ -18,7 +18,7 @@ import os
 import click
 import platform
 
-from pcm.func import _login, _edm, _setupfiles, _code, _launcher, _init, _email
+from pcm.func import _login, _edm, _setupfiles, _code, _launcher, _init, _email, _scripts
 from pcm.util import echo_config
 
 
@@ -87,7 +87,7 @@ def device(template, name):
 @click.option(
     "--massspec_db_version", "msv", default=16, help="massspec database version"
 )
-@click.option("--ngx/--no-ngx", default=False, help="Install NGX")
+@click.option("--use_ngx/--no-ngx", default=False, help="Install NGX")
 @click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
@@ -177,7 +177,7 @@ def edm(environment, app, verbose):
 
 @cli.command()
 @click.option("--env", default="Pychron", help="Environment, aka root directory name")
-@click.option("--ngx/--no-ngx", default=False, help="Install NGX")
+@click.option("--use_ngx/--no-ngx", default=False, help="Install NGX")
 @click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
@@ -185,6 +185,32 @@ def edm(environment, app, verbose):
 def setupfiles(env, use_ngx, overwrite, verbose):
     _setupfiles(env, use_ngx, overwrite, verbose)
 
+@cli.command()
+@click.option("--env", default="Pychron", help="Environment, aka root directory name")
+@click.option("--use_ngx/--no-ngx", default=False, help="Install NGX")
+@click.option(
+    "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
+)
+@click.option("--verbose/--no-verbose", default=False, help="Verbose output")
+def scripts(env, use_ngx, overwrite, verbose):
+    _scripts(env, use_ngx, overwrite, verbose)
+
+@cli.command()
+@click.option("--env", default="Pychron", help="Environment, aka root directory name")
+@click.option(
+    "--org",
+    default="NMGRL",
+    help="Github organization for storing laboratory files such as Plot Options",
+)
+@click.option("--use_ngx/--no-ngx", default=False, help="Install NGX")
+@click.option(
+    "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
+)
+@click.option("--verbose/--no-verbose", default=False, help="Verbose output")
+def buildenv(env, org, use_ngx, overwrite, verbose):
+    _init(env, org, use_ngx, overwrite, verbose)
+    _setupfiles(env, use_ngx, overwrite, verbose)
+    _scripts(env, use_ngx, overwrite, verbose)
 
 @cli.command()
 @click.option("--fork", help="Name of the pychron fork to clone")
@@ -224,7 +250,7 @@ def launcher(
     default="NMGRL",
     help="Github organization for storing laboratory files such as Plot Options",
 )
-@click.option("--ngx/--no-ngx", default=False, help="Install NGX")
+@click.option("--use_ngx/--no-ngx", default=False, help="Install NGX")
 @click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )

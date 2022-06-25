@@ -25,6 +25,17 @@ def yes(msg):
     return input(msg) in ("", "y", "yes", "Yes", "YES")
 
 
+def r_mkdir(p, *args):
+    p = os.path.join(p, *args)
+    if p and not os.path.isdir(p):
+        try:
+            os.mkdir(p)
+        except OSError:
+            r_mkdir(os.path.dirname(p))
+            os.mkdir(p)
+    return p
+
+
 def make_dir(root, name):
     for d in (root, os.path.join(root, name)):
         if not os.path.isdir(d):
@@ -49,6 +60,5 @@ def echo_config(*args):
     for a in args:
         click.secho(f"={a}", fg="yellow")
     click.secho("------------ Configuration End -------------", fg="yellow")
-
 
 # ============= EOF =============================================

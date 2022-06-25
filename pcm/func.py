@@ -97,55 +97,56 @@ def _edm(environment, app, verbose):
     )
 
 
-def _setupfiles(env, use_ngx, overwrite, verbose):
+def _render_template(dargs, name, overwrite):
+    d = util.r_mkdir(*dargs)
+    p = os.path.join(d, name)
+    util.write(p, render.render_template(name), overwrite)
+
+
+def _scripts(env, use_ngx, overwrite, verbose):
     root = os.path.join(HOME, env)
-
-    util.make_dir(root, "setupfiles")
-
-    sf = os.path.join(root, "setupfiles")
-
-    scripts = "scripts"
-    util.make_dir(root, scripts)
-    p = os.path.join(root, scripts, "defaults.yaml")
-    util.write(p, render.render_template("defaults.yaml"), overwrite)
+    _render_template((root, 'scripts'), "defaults.yaml", overwrite)
 
     measurement_args = "measurement", "unknown"
     extraction_args = "extraction", "extraction"
     procedure_args = "procedures", "procedure"
+    post_eq_args = "post_equilibration", "post_equilibration"
+    post_m_args = "post_measurement", "post_measurement"
 
-    for name, filename in (measurement_args, extraction_args, procedure_args):
-        txt = render.render_template(filename)
-        d = os.path.join(scripts, name)
-        util.make_dir(root, d)
-        p = os.path.join(root, d, "example_{}.py".format(filename))
-        util.write(p, txt, overwrite)
+    for name, filename in (measurement_args, extraction_args, procedure_args,
+                           post_eq_args, post_m_args):
+        _render_template((root, 'scripts', name),
+                         "example_{}.py".format(filename), overwrite)
 
-    util.make_dir(os.path.join(root, "measurement"), "fits")
-    p = os.path.joint(root, "measurement", "fits", "nominal.yaml")
-    util.write(p, "nominal.yaml.template")
+    for dname, pname in (("fits", "nominal.yaml"),
+                         ('hops', 'hops.yaml')):
+        _render_template((root, 'scripts', 'measurement', dname), pname, overwrite)
 
-    util.make_dir(os.path.join(root, "measurement"), "hops")
-    p = os.path.joint(root, "measurement", "hops", "nominal.yaml")
-    util.write(p, "nominal.yaml.template")
+
+def _setupfiles(env, use_ngx, overwrite, verbose):
+    root = os.path.join(HOME, env)
+
+    sf = util.r_mkdir(root, "setupfiles")
 
     for d, ps, enabled in (
-        ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml"), True),
-        ("extractionline", ("valves.yaml",), True),
-        ("monitors", ("system_monitor.cfg",), True),
-        (
-            "devices",
+            ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml"), True),
+            ("extractionline", ("valves.yaml",), True),
+            ("monitors", ("system_monitor.cfg",), True),
             (
-                "ngx_switch_controller.cfg",
-                "spectrometer_controller.cfg",
-                "NGXGPActuator.cfg",
+                    "devices",
+                    (
+                            "ngx_switch_controller.cfg",
+                            "spectrometer_microcontroller.cfg",
+                            "NGXGPActuator.cfg",
+                    ),
+                    use_ngx,
             ),
-            use_ngx,
-        ),
-        ("", ("startup_tests.yaml", "experiment_defaults.yaml"), True),
+            ("", ("startup_tests.yaml", "experiment_defaults.yaml"), True),
     ):
         if d:
-            out = os.path.join(sf, d)
-            util.make_dir(sf, d)
+            # out = os.path.join(sf, d)
+            # util.make_dir(sf, d)
+            out = util.r_mkdir(sf, d)
         else:
             out = sf
 
@@ -158,15 +159,11 @@ def _setupfiles(env, use_ngx, overwrite, verbose):
             p = os.path.join(out, template)
             util.write(p, txt, overwrite, verbose)
 
-    ctx = {
-        "canvas_path": os.path.join(sf, "canvas2D", "canvas.yaml"),
-        "canvas_config_path": os.path.join(sf, "canvas2D", "canvas_config.xml"),
-        "valves_path": os.path.join(sf, "extractionline", "valves.yaml"),
-    }
-    d = os.path.join(root, "preferences")
-    util.make_dir(root, "preferences")
-    p = os.path.join(d, "extractionline.ini")
-    util.write(p, render.render_template("extractionline.ini", **ctx), overwrite)
+    if use_ngx:
+        util.r_mkdir(root, "spectrometer", 'mftables')
+        name = "mftable.csv"
+        p = os.path.join(d, name)
+        util.write(p, render.render_template(name), overwrite)
 
 
 def _code(fork, branch, app_id):
@@ -178,7 +175,7 @@ def _code(fork, branch, app_id):
 
     if os.path.isdir(ppath):
         if not util.yes(
-            "Pychron source code already exists. Remove and re-clone [y]/n"
+                "Pychron source code already exists. Remove and re-clone [y]/n"
         ):
             subprocess.call([GIT, "status"], cwd=ppath)
             return
@@ -192,7 +189,7 @@ def _code(fork, branch, app_id):
 
 
 def _launcher(
-    conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
+        conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
 ):
     click.echo("launcher")
     template = "failed to make tmplate"
@@ -249,41 +246,34 @@ def _init(env, org, use_ngx, overwrite, verbose):
         click.echo("======== Initialization.xml contents end ========")
 
     root = os.path.join(HOME, env)
-    sf = "setupfiles"
-    util.make_dir(root, sf)
 
-    p = os.path.join(root, sf, "initialization.xml")
+    d = util.r_mkdir(root, "setupfiles")
+
+    p = os.path.join(d, "initialization.xml")
     util.write(p, txt, overwrite=overwrite)
 
-    d = os.path.join(root, "preferences")
-    util.make_dir(root, "preferences")
+    d = util.r_mkdir(root, "preferences")
+    gctx = dict(general_organization=org, general_remote="{}/Laboratory")
+    uctx = dict(build_repo=os.path.join(HOME, ".pychron.0", "pychron"),
+                build_remote="PychronLabsLLC/pychron",
+                build_branch="dev/dr")
 
-    template = "general.ini"
-    txt = render.render_template(
-        template, general_organization=org, general_remote="{}/Laboratory"
-    )
-    p = os.path.join(d, "general.ini")
-    util.write(p, txt, overwrite=overwrite)
+    sf = os.path.join(HOME, env, 'setupfiles')
+    ectx = {
+        "canvas_path": os.path.join(sf, "canvas2D", "canvas.yaml"),
+        "canvas_config_path": os.path.join(sf, "canvas2D", "canvas_config.xml"),
+        "valves_path": os.path.join(sf, "extractionline", "valves.yaml"),
+    }
 
-    template = "update.ini"
-    txt = render.render_template(
-        template,
-        build_repo=os.path.join(HOME, ".pychron.0", "pychron"),
-        build_remote="PychronLabsLLC/pychron",
-        build_branch="dev/dr",
-    )
-    p = os.path.join(d, "update.ini")
-    util.write(p, txt, overwrite=overwrite)
-
-    template = "arar_constants.ini"
-    txt = render.render_template(template)
-    p = os.path.join(d, "arar_constants.ini")
-    util.write(p, txt, overwrite=overwrite)
-    if use_ngx:
-        template = "ngx.ini"
-        txt = render.render_template(template)
-        p = os.path.join(d, "ngx.ini")
-        util.write(p, txt, overwrite=overwrite)
-
+    for template, ctx, flag in (("general.ini", gctx, True),
+                                ('dvc.ini', {}, True),
+                                ('update.ini', uctx, True),
+                                ('arar_constants.ini', {}, True),
+                                ('extractionline.ini', ectx, True),
+                                ('ngx.ini', {}, use_ngx)):
+        if flag:
+            txt = render.render_template(template, **ctx)
+            p = os.path.join(d, template)
+            util.write(p, txt, overwrite=overwrite)
 
 # ============= EOF =============================================
