@@ -97,7 +97,7 @@ def _edm(environment, app, verbose):
     )
 
 
-def _setupfiles(env, overwrite, verbose):
+def _setupfiles(env, use_ngx, overwrite, verbose):
     root = os.path.join(HOME, env)
 
     util.make_dir(root, "setupfiles")
@@ -120,11 +120,22 @@ def _setupfiles(env, overwrite, verbose):
         p = os.path.join(root, d, "example_{}.py".format(filename))
         util.write(p, txt, overwrite)
 
-    for d, ps in (
-        ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml")),
-        ("extractionline", ("valves.yaml",)),
-        ("monitors", ("system_monitor.cfg",)),
-        ("", ("startup_tests.yaml", "experiment_defaults.yaml")),
+    util.make_dir(os.path.join(root, 'measurement'), 'fits')
+    p = os.path.joint(root, 'measurement', 'fits', 'nominal.yaml')
+    util.write(p, 'nominal.yaml.template')
+
+    util.make_dir(os.path.join(root, 'measurement'), 'hops')
+    p = os.path.joint(root, 'measurement', 'hops', 'nominal.yaml')
+    util.write(p, 'nominal.yaml.template')
+
+    for d, ps, enabled in (
+            ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml"), True),
+            ("extractionline", ("valves.yaml",), True),
+            ("monitors", ("system_monitor.cfg",), True),
+            ("devices", ("ngx_switch_controller.cfg",
+                         "spectrometer_controller.cfg",
+                         "NGXGPActuator.cfg"), use_ngx),
+            ("", ("startup_tests.yaml", "experiment_defaults.yaml"), True),
     ):
         if d:
             out = os.path.join(sf, d)
@@ -134,6 +145,10 @@ def _setupfiles(env, overwrite, verbose):
 
         for template in ps:
             txt = render.render_template(template)
+            if template == 'valves.yaml' and use_ngx:
+                txt += '''- name: MS_Inlet
+                address: PIV
+                '''
             p = os.path.join(out, template)
             util.write(p, txt, overwrite, verbose)
 
@@ -157,7 +172,7 @@ def _code(fork, branch, app_id):
 
     if os.path.isdir(ppath):
         if not util.yes(
-            "Pychron source code already exists. Remove and re-clone [y]/n"
+                "Pychron source code already exists. Remove and re-clone [y]/n"
         ):
             subprocess.call([GIT, "status"], cwd=ppath)
             return
@@ -171,7 +186,7 @@ def _code(fork, branch, app_id):
 
 
 def _launcher(
-    conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
+        conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
 ):
     click.echo("launcher")
     template = "failed to make tmplate"
@@ -218,7 +233,7 @@ def _email(env, overwrite):
     util.write(p, txt, overwrite=overwrite)
 
 
-def _init(env, org, overwrite, verbose):
+def _init(env, org, use_ngx, overwrite, verbose):
     click.echo("make initialization file")
     template = "initialization.xml"
     txt = render.render_template(template)
@@ -258,6 +273,10 @@ def _init(env, org, overwrite, verbose):
     txt = render.render_template(template)
     p = os.path.join(d, "arar_constants.ini")
     util.write(p, txt, overwrite=overwrite)
-
+    if use_ngx:
+        template = "ngx.ini"
+        txt = render.render_template(template)
+        p = os.path.join(d, "ngx.ini")
+        util.write(p, txt, overwrite=overwrite)
 
 # ============= EOF =============================================

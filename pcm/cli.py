@@ -88,6 +88,9 @@ def device(template, name):
     "--massspec_db_version", "msv", default=16, help="massspec database version"
 )
 @click.option(
+    "--ngx/--no-ngx", default=False, help="Install NGX"
+)
+@click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
@@ -109,6 +112,7 @@ def wizard(
     login,
     msv,
     overwrite,
+    use_ngx,
     verbose,
 ):
     echo_config(
@@ -129,6 +133,7 @@ def wizard(
         login,
         msv,
         overwrite,
+        use_ngx,
         verbose,
     )
     click.secho("Install the pychron application", bold="True", fg="green")
@@ -136,10 +141,10 @@ def wizard(
         _code(fork, branch, app_id)
 
     if use_init:
-        _init(env, org, overwrite, verbose)
+        _init(env, org, use_ngx, overwrite, verbose)
 
     if use_setupfiles:
-        _setupfiles(env, overwrite, verbose)
+        _setupfiles(env, use_ngx, overwrite, verbose)
 
     if use_edm:
         _edm(environment, app, verbose)
@@ -175,11 +180,14 @@ def edm(environment, app, verbose):
 @cli.command()
 @click.option("--env", default="Pychron", help="Environment, aka root directory name")
 @click.option(
+    "--ngx/--no-ngx", default=False, help="Install NGX"
+)
+@click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
-def setupfiles(env, overwrite, verbose):
-    _setupfiles(env, overwrite, verbose)
+def setupfiles(env, use_ngx, overwrite, verbose):
+    _setupfiles(env, use_ngx, overwrite, verbose)
 
 
 @cli.command()
@@ -221,11 +229,14 @@ def launcher(
     help="Github organization for storing laboratory files such as Plot Options",
 )
 @click.option(
+    "--ngx/--no-ngx", default=False, help="Install NGX"
+)
+@click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
-def init(env, org, overwrite, verbose):
-    _init(env, org, overwrite, verbose)
+def init(env, org, use_ngx, overwrite, verbose):
+    _init(env, org, use_ngx, overwrite, verbose)
 
 
 @cli.command()
