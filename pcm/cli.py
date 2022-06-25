@@ -87,9 +87,7 @@ def device(template, name):
 @click.option(
     "--massspec_db_version", "msv", default=16, help="massspec database version"
 )
-@click.option(
-    "--ngx/--no-ngx", default=False, help="Install NGX"
-)
+@click.option("--ngx/--no-ngx", default=False, help="Install NGX")
 @click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
@@ -179,9 +177,7 @@ def edm(environment, app, verbose):
 
 @cli.command()
 @click.option("--env", default="Pychron", help="Environment, aka root directory name")
-@click.option(
-    "--ngx/--no-ngx", default=False, help="Install NGX"
-)
+@click.option("--ngx/--no-ngx", default=False, help="Install NGX")
 @click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
@@ -228,9 +224,7 @@ def launcher(
     default="NMGRL",
     help="Github organization for storing laboratory files such as Plot Options",
 )
-@click.option(
-    "--ngx/--no-ngx", default=False, help="Install NGX"
-)
+@click.option("--ngx/--no-ngx", default=False, help="Install NGX")
 @click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
