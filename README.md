@@ -38,3 +38,10 @@ or for help
 ```shell
 pcm --help
 ```
+
+
+# Manually build EDM environment
+```shell
+edm shell -e pychron chaco,certifi,cython,envisage,future,gitpython,keyring,jinja2,lxml,numpy,pandas,patsy,pillow,pip,pyface,pyparsing,pyproj,pyqt5,pytables,pyyaml,pygments,qt,Reportlab,requests,scipy,sqlalchemy,traits,xlrd,xlsxwriter,xlwt,statsmodels
+pip install --no-dependencies uncertainties qimage2ndarray pymysql
+```

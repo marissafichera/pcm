@@ -1,11 +1,6 @@
-call {conda_distro:}\\Scripts\\activate.bat {conda_distro:}\\envs\\{conda_env_name:}
 set GITHUB_ORGANIZATION={github_org:}
-set GITHUB_TOKEN={github_token:}
 set MassSpecDBVersion={massspec_db_version:}
-set CONDA_ENV={conda_env_name:}
-set CONDA_DISTRO={conda_distro:}
 set APPLICATION_ID={app_id:}
-set QT_API={qt_api:}
 
 set PYCHRON_APPNAME={app_name:}
 set PYCHRON_DATABASE_UPDATE={update_db:}
@@ -15,4 +10,4 @@ set PYCHRON_USE_LOGIN=0
 
 set PYTHONPATH={pychron_path:}
 
-{conda_distro:}\\envs\\{conda_env_name:}\\python.exe {pychron_path:}\\launchers\\launcher.py
+{edm_envs_root:}/{edm_env:}/bin/python {pychron_path:}/launchers/launcher.py

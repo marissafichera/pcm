@@ -24,17 +24,13 @@ import click
 import yaml
 
 from pcm import util, requirements, render
+from pcm.util import find_prog, handle_check_call
 
 IS_MAC = platform.system() == "Darwin"
 IS_WINDOWS = platform.system() == "Windows"
 HOME = os.path.expanduser("~")
 EDM_ENVS_ROOT = os.path.join(HOME, ".edm", "envs")
 EDM_BIN = os.path.join(EDM_ENVS_ROOT, "edm", "bin")
-
-if IS_WINDOWS:
-    GIT = "C:\\Git\\bin\\git"
-else:
-    GIT = "git"
 
 
 def _login(env, app_id):
@@ -77,6 +73,8 @@ def _edm(environment, app, verbose):
             active_python, "envs", environment, "bin", "python"
         )
         cmdargs.extend(["--environment", environment])
+
+        handle_check_call(['edm', 'environments', 'create', environment])
     else:
         active_python = os.path.join(active_python, "bin", "python")
 
@@ -84,8 +82,8 @@ def _edm(environment, app, verbose):
         click.echo(f'requirements: {" ".join(req)}')
         click.echo(f'command: {" ".join(cmdargs)}')
 
-    subprocess.call(cmdargs)
-    subprocess.call(
+    handle_check_call(cmdargs)
+    handle_check_call(
         [
             active_python,
             "-m",
@@ -174,35 +172,40 @@ def _setupfiles(env, use_ngx, overwrite, verbose):
 def _code(fork, branch, app_id):
     update_root = os.path.join(HOME, f".pychron.{app_id}")
     ppath = os.path.join(update_root, "pychron")
+    # locate the git executable
+    git = find_prog('git')
+    if not git:
+        click.secho("Could not locate git executable", fg="red")
+        return
 
     if not os.path.isdir(update_root):
         os.mkdir(update_root)
 
     if os.path.isdir(ppath):
         if not util.yes(
-            "Pychron source code already exists. Remove and re-clone [y]/n"
+                "Pychron source code already exists. Remove and re-clone [y]/n"
         ):
-            subprocess.call([GIT, "status"], cwd=ppath)
-            return
-
-        shutil.rmtree(ppath)
+            shutil.rmtree(ppath)
 
     url = f"https://github.com/{fork}/pychron.git"
 
-    subprocess.call([GIT, "clone", url, f"--branch={branch}", ppath])
-    subprocess.call([GIT, "status"], cwd=ppath)
+    subprocess.call([git, "clone", url, f"--branch={branch}", ppath])
+    subprocess.call([git, "status"], cwd=ppath)
 
 
 def _launcher(
-    conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
+        conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
 ):
     click.echo("launcher")
-    template = "failed to make tmplate"
+
     if IS_MAC:
         if conda:
             template = "launcher_mac_conda"
         else:
             template = "launcher_mac"
+    else:
+        template = "launcher_pc"
+        output = "pychron_launcher.bat"
 
     ctx = {
         "github_org": org,
@@ -225,8 +228,9 @@ def _launcher(
         click.echo(txt)
     util.write(output, txt, overwrite)
 
-    # make launcher executable
-    subprocess.call(["chmod", "+x", output])
+    if not IS_WINDOWS:
+        # make launcher executable
+        subprocess.call(["chmod", "+x", output])
 
 
 def _email(env, overwrite):
@@ -285,5 +289,37 @@ def _init(env, org, use_ngx, overwrite, verbose):
             p = os.path.join(d, template)
             util.write(p, txt, overwrite=overwrite)
 
+
+def _makefile(name, env, overwrite):
+    txt = render.render_template(name)
+    p = os.path.join(HOME, env, name)
+    util.write(p, txt, overwrite=overwrite)
+
+
+def _spectrometer_init(kind, env, overwrite):
+    kind = kind.lower()
+    root = os.path.join(HOME, env)
+
+    # mftable
+    txt = render.render_template(f'{kind}_mftable.csv')
+    p = os.path.join(root, 'setupfiles', 'spectrometer', 'mftables', 'mftable.csv')
+    util.write(p, txt, overwrite)
+
+    # config
+    txt = render.render_template(f'{kind}_config.cfg')
+    p = os.path.join(root, 'setupfiles', 'spectrometer', 'configurations', 'config.cfg')
+    util.write(p, txt, overwrite)
+
+    # detectors
+    txt = render.render_template(f'{kind}_detectors.yaml')
+    p = os.path.join(root, 'setupfiles', 'spectrometer', 'detectors.yaml')
+    util.write(p, txt, overwrite)
+
+    if kind == 'ngx':
+        # preferences
+        template = "ngx.ini"
+        txt = render.render_template(template)
+        p = os.path.join(root, 'preferences', template)
+        util.write(p, txt, overwrite=overwrite)
 
 # ============= EOF =============================================

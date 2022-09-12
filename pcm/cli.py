@@ -27,6 +27,8 @@ from pcm.func import (
     _init,
     _email,
     _scripts,
+    _makefile,
+    _spectrometer_init
 )
 from pcm.util import echo_config
 
@@ -278,6 +280,32 @@ def init(env, org, use_ngx, overwrite, verbose):
 )
 def email(env, overwrite):
     _email(env, overwrite)
+
+
+
+@cli.command()
+@click.argument('name')
+@click.option("--env", default="Pychron", help="Environment, aka root directory name")
+@click.option(
+    "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
+)
+def makefile(name, env, overwrite):
+    """
+    """
+    _makefile(name, env, overwrite)
+
+
+@cli.command()
+@click.argument('kind',
+                type=click.Choice(['ngx', 'argus', 'helix'], case_sensitive=False))
+@click.option("--env", default="Pychron", help="Environment, aka root directory name")
+@click.option(
+    "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
+)
+def spectrometer_init(kind, env, overwrite):
+    """
+    """
+    _spectrometer_init(kind, env, overwrite)
 
 
 if __name__ == "__main__":
