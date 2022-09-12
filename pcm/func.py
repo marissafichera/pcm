@@ -163,7 +163,7 @@ def _setupfiles(env, use_ngx, overwrite, verbose):
             util.write(p, txt, overwrite, verbose)
 
     if use_ngx:
-        _spectrometer_init('ngx', env, overwrite)
+        _spectrometer_init("ngx", env, overwrite)
 
 
 def _code(fork, branch, app_id):
