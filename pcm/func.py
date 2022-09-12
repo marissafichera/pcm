@@ -74,7 +74,7 @@ def _edm(environment, app, verbose):
         )
         cmdargs.extend(["--environment", environment])
 
-        handle_check_call(['edm', 'environments', 'create', environment])
+        handle_check_call(["edm", "environments", "create", environment])
     else:
         active_python = os.path.join(active_python, "bin", "python")
 
@@ -173,7 +173,7 @@ def _code(fork, branch, app_id):
     update_root = os.path.join(HOME, f".pychron.{app_id}")
     ppath = os.path.join(update_root, "pychron")
     # locate the git executable
-    git = find_prog('git')
+    git = find_prog("git")
     if not git:
         click.secho("Could not locate git executable", fg="red")
         return
@@ -183,7 +183,7 @@ def _code(fork, branch, app_id):
 
     if os.path.isdir(ppath):
         if not util.yes(
-                "Pychron source code already exists. Remove and re-clone [y]/n"
+            "Pychron source code already exists. Remove and re-clone [y]/n"
         ):
             shutil.rmtree(ppath)
 
@@ -194,7 +194,7 @@ def _code(fork, branch, app_id):
 
 
 def _launcher(
-        conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
+    conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
 ):
     click.echo("launcher")
 
@@ -301,25 +301,26 @@ def _spectrometer_init(kind, env, overwrite):
     root = os.path.join(HOME, env)
 
     # mftable
-    txt = render.render_template(f'{kind}_mftable.csv')
-    p = os.path.join(root, 'setupfiles', 'spectrometer', 'mftables', 'mftable.csv')
+    txt = render.render_template(f"{kind}_mftable.csv")
+    p = os.path.join(root, "setupfiles", "spectrometer", "mftables", "mftable.csv")
     util.write(p, txt, overwrite)
 
     # config
-    txt = render.render_template(f'{kind}_config.cfg')
-    p = os.path.join(root, 'setupfiles', 'spectrometer', 'configurations', 'config.cfg')
+    txt = render.render_template(f"{kind}_config.cfg")
+    p = os.path.join(root, "setupfiles", "spectrometer", "configurations", "config.cfg")
     util.write(p, txt, overwrite)
 
     # detectors
-    txt = render.render_template(f'{kind}_detectors.yaml')
-    p = os.path.join(root, 'setupfiles', 'spectrometer', 'detectors.yaml')
+    txt = render.render_template(f"{kind}_detectors.yaml")
+    p = os.path.join(root, "setupfiles", "spectrometer", "detectors.yaml")
     util.write(p, txt, overwrite)
 
-    if kind == 'ngx':
+    if kind == "ngx":
         # preferences
         template = "ngx.ini"
         txt = render.render_template(template)
-        p = os.path.join(root, 'preferences', template)
+        p = os.path.join(root, "preferences", template)
         util.write(p, txt, overwrite=overwrite)
+
 
 # ============= EOF =============================================

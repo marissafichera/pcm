@@ -59,7 +59,7 @@ def write(p, t, overwrite=False, verbose=False):
             click.secho("writing an empty file", fg="yellow")
 
         with open(p, "w") as wfile:
-            wfile.write(t or '')
+            wfile.write(t or "")
     else:
         click.secho(f"file already exists skipping: {p}", fg="red")
 
@@ -103,8 +103,9 @@ def handle_check_call(*args, **kw):
         subprocess.check_call(*args, **kw)
     except subprocess.CalledProcessError:
         import traceback
+
         exc = traceback.format_exc()
-        click.secho(exc, fg='red')
+        click.secho(exc, fg="red")
 
 
 # ============= EOF =============================================
