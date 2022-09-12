@@ -163,10 +163,7 @@ def _setupfiles(env, use_ngx, overwrite, verbose):
             util.write(p, txt, overwrite, verbose)
 
     if use_ngx:
-        util.r_mkdir(root, "spectrometer", "mftables")
-        name = "mftable.csv"
-        p = os.path.join(d, name)
-        util.write(p, render.render_template(name), overwrite)
+        _spectrometer_init('ngx', env, overwrite)
 
 
 def _code(fork, branch, app_id):
