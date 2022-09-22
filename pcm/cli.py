@@ -28,7 +28,7 @@ from pcm.func import (
     _email,
     _scripts,
     _makefile,
-    _spectrometer_init,
+    _spectrometer_init, _metarepo,
 )
 from pcm.util import echo_config
 
@@ -305,6 +305,16 @@ def spectrometer_init(kind, env, overwrite):
     """ """
     _spectrometer_init(kind, env, overwrite)
 
+
+@cli.command()
+@click.argument("name", default="MetaData")
+@click.option("--env", default="Pychron", help="Environment, aka root directory name")
+@click.option(
+    "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
+)
+def metarepo(name, env, overwrite):
+    """ """
+    _metarepo(name, env, overwrite)
 
 if __name__ == "__main__":
     cli()

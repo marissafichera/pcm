@@ -24,7 +24,10 @@ def render_template(template_name, **ctx):
     if os.path.isfile(p):
         with open(p, "r") as rfile:
             txt = rfile.read()
-            return txt.format(**ctx)
+
+            if not template_name.endswith('.json'):
+                txt = txt.format(**ctx)
+            return txt
     else:
         click.echo(f"{p} not a valid template")
 

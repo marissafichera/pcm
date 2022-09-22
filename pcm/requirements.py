@@ -49,4 +49,9 @@ EDM_REQUIREMENTS = [
     "statsmodels",
     "cryptography",
 ]
+
+PIP_REQUIREMENTS = ["uncertainties", "qimage2ndarray", "pymysql"]
+VALVE_REQUIREMENTS = ["pyserial", "twisted"]
+PIP_EXTRAS = ["peakutils", "utm"]
+
 # ============= EOF =============================================

@@ -59,12 +59,12 @@ def _login(env, app_id):
 def _edm(environment, app, verbose):
     click.secho("edm install", bold=True, fg="green")
     req = requirements.EDM_REQUIREMENTS
-    pip_req = ["uncertainties", "qimage2ndarray", "pymysql"]
+    pip_req = requirements.PIP_REQUIREMENTS
 
     if app == "pyvalve":
-        req.extend(["pyserial", "twisted"])
+        req.extend(requirements.VALVE_REQUIREMENTS)
     else:
-        pip_req.extend(["peakutils", "utm"])
+        pip_req.extend(requirements.PIP_EXTRAS)
 
     cmdargs = ["edm", "install", "-y"] + req
     active_python = os.path.join(HOME, ".edm")
@@ -318,6 +318,50 @@ def _spectrometer_init(kind, env, overwrite):
         txt = render.render_template(template)
         p = os.path.join(root, "preferences", template)
         util.write(p, txt, overwrite=overwrite)
+
+
+def _metarepo(name, env, overwrite):
+    root = os.path.join(HOME, env, 'data', '.dvc', name)
+    os.mkdir(root)
+
+    ih = os.path.join(root, 'irradiation_holders')
+    os.mkdir(ih)
+    template = 'Grid.txt'
+    txt = render.render_template(template)
+    p = os.path.join(ih, template)
+    util.write(p, txt, overwrite)
+
+    ni = os.path.join(root, 'NoIrradiation')
+    os.mkdir(ni)
+
+    template = 'productions.json'
+    p = os.path.join(ni, template)
+    txt = render.render_template(template)
+    util.write(p, txt, overwrite)
+
+    pp = os.path.join(ni, 'productions')
+    os.mkdir(pp)
+
+    template = 'A.json'
+    p = os.path.join(ni, template)
+    txt = render.render_template(template)
+    util.write(p, txt, overwrite)
+
+    template = 'NoIrradiation.json'
+    txt = render.render_template(template)
+    nipp = os.path.join(pp, template)
+    util.write(nipp, txt, overwrite)
+
+    cp = os.path.join(ni, 'chronology.txt')
+    with open(cp, 'w') as wfile:
+        pass
+
+    # init as a git repo
+    git = find_prog("git")
+    if not git:
+        click.secho("Could not locate git executable", fg="red")
+        return
+    subprocess.call([git, "init"], cwd=root)
 
 
 # ============= EOF =============================================
