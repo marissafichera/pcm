@@ -321,39 +321,39 @@ def _spectrometer_init(kind, env, overwrite):
 
 
 def _metarepo(name, env, overwrite):
-    root = os.path.join(HOME, env, 'data', '.dvc', name)
+    root = os.path.join(HOME, env, "data", ".dvc", name)
     os.mkdir(root)
 
-    ih = os.path.join(root, 'irradiation_holders')
+    ih = os.path.join(root, "irradiation_holders")
     os.mkdir(ih)
-    template = 'Grid.txt'
+    template = "Grid.txt"
     txt = render.render_template(template)
     p = os.path.join(ih, template)
     util.write(p, txt, overwrite)
 
-    ni = os.path.join(root, 'NoIrradiation')
+    ni = os.path.join(root, "NoIrradiation")
     os.mkdir(ni)
 
-    template = 'productions.json'
+    template = "productions.json"
     p = os.path.join(ni, template)
     txt = render.render_template(template)
     util.write(p, txt, overwrite)
 
-    pp = os.path.join(ni, 'productions')
+    pp = os.path.join(ni, "productions")
     os.mkdir(pp)
 
-    template = 'A.json'
+    template = "A.json"
     p = os.path.join(ni, template)
     txt = render.render_template(template)
     util.write(p, txt, overwrite)
 
-    template = 'NoIrradiation.json'
+    template = "NoIrradiation.json"
     txt = render.render_template(template)
     nipp = os.path.join(pp, template)
     util.write(nipp, txt, overwrite)
 
-    cp = os.path.join(ni, 'chronology.txt')
-    with open(cp, 'w') as wfile:
+    cp = os.path.join(ni, "chronology.txt")
+    with open(cp, "w") as wfile:
         pass
 
     # init as a git repo

@@ -25,7 +25,7 @@ def render_template(template_name, **ctx):
         with open(p, "r") as rfile:
             txt = rfile.read()
 
-            if not template_name.endswith('.json'):
+            if not template_name.endswith(".json"):
                 txt = txt.format(**ctx)
             return txt
     else:

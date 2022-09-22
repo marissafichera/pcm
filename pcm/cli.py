@@ -28,7 +28,8 @@ from pcm.func import (
     _email,
     _scripts,
     _makefile,
-    _spectrometer_init, _metarepo,
+    _spectrometer_init,
+    _metarepo,
 )
 from pcm.util import echo_config
 
@@ -315,6 +316,7 @@ def spectrometer_init(kind, env, overwrite):
 def metarepo(name, env, overwrite):
     """ """
     _metarepo(name, env, overwrite)
+
 
 if __name__ == "__main__":
     cli()
