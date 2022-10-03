@@ -321,8 +321,8 @@ def _spectrometer_init(kind, env, overwrite):
         util.write(p, txt, overwrite=overwrite)
 
 
-def _metarepo(env, overwrite):
-    root = os.path.join(HOME, env, 'data', '.dvc', 'MetaData')
+def _metarepo(name, env, overwrite):
+    root = os.path.join(HOME, env, 'data', '.dvc', name)
     r_mkdir(root)
     if not os.path.isfile(os.path.join(root, '.git')):
         repo = Repo.init(root)
