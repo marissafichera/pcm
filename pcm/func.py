@@ -113,11 +113,11 @@ def _scripts(env, use_ngx, overwrite, verbose):
     post_m_args = "post_measurement", "post_measurement"
 
     for name, filename in (
-            measurement_args,
-            extraction_args,
-            procedure_args,
-            post_eq_args,
-            post_m_args,
+        measurement_args,
+        extraction_args,
+        procedure_args,
+        post_eq_args,
+        post_m_args,
     ):
         _render_template(
             (root, "scripts", name), "example_{}.py".format(filename), overwrite
@@ -133,19 +133,19 @@ def _setupfiles(env, use_ngx, overwrite, verbose):
     sf = util.r_mkdir(root, "setupfiles")
 
     for d, ps, enabled in (
-            ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml"), True),
-            ("extractionline", ("valves.yaml",), True),
-            ("monitors", ("system_monitor.cfg",), True),
+        ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml"), True),
+        ("extractionline", ("valves.yaml",), True),
+        ("monitors", ("system_monitor.cfg",), True),
+        (
+            "devices",
             (
-                    "devices",
-                    (
-                            "ngx_switch_controller.cfg",
-                            "spectrometer_microcontroller.cfg",
-                            "NGXGPActuator.cfg",
-                    ),
-                    use_ngx,
+                "ngx_switch_controller.cfg",
+                "spectrometer_microcontroller.cfg",
+                "NGXGPActuator.cfg",
             ),
-            ("", ("startup_tests.yaml", "experiment_defaults.yaml"), True),
+            use_ngx,
+        ),
+        ("", ("startup_tests.yaml", "experiment_defaults.yaml"), True),
     ):
         if d:
             # out = os.path.join(sf, d)
@@ -181,7 +181,7 @@ def _code(fork, branch, app_id):
 
     if os.path.isdir(ppath):
         if not util.yes(
-                "Pychron source code already exists. Remove and re-clone [y]/n"
+            "Pychron source code already exists. Remove and re-clone [y]/n"
         ):
             shutil.rmtree(ppath)
 
@@ -192,7 +192,7 @@ def _code(fork, branch, app_id):
 
 
 def _launcher(
-        conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
+    conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
 ):
     click.echo("launcher")
 
@@ -275,12 +275,12 @@ def _init(env, org, use_ngx, overwrite, verbose):
     }
 
     for template, ctx, flag in (
-            ("general.ini", gctx, True),
-            ("dvc.ini", {}, True),
-            ("update.ini", uctx, True),
-            ("arar_constants.ini", {}, True),
-            ("extractionline.ini", ectx, True),
-            ("ngx.ini", {}, use_ngx),
+        ("general.ini", gctx, True),
+        ("dvc.ini", {}, True),
+        ("update.ini", uctx, True),
+        ("arar_constants.ini", {}, True),
+        ("extractionline.ini", ectx, True),
+        ("ngx.ini", {}, use_ngx),
     ):
         if flag:
             txt = render.render_template(template, **ctx)
@@ -322,42 +322,43 @@ def _spectrometer_init(kind, env, overwrite):
 
 
 def _metarepo(name, env, overwrite):
-    root = os.path.join(HOME, env, 'data', '.dvc', name)
+    root = os.path.join(HOME, env, "data", ".dvc", name)
     r_mkdir(root)
-    if not os.path.isfile(os.path.join(root, '.git')):
+    if not os.path.isfile(os.path.join(root, ".git")):
         repo = Repo.init(root)
     else:
         repo = Repo(root)
 
-    ih = os.path.join(root, 'irradiation_holders')
+    ih = os.path.join(root, "irradiation_holders")
     r_mkdir(ih)
-    template = 'Grid.txt'
+    template = "Grid.txt"
     p = os.path.join(ih, template)
     txt = render.render_template(template)
     util.write(p, txt, overwrite=overwrite)
     repo.index.add(p)
 
-    noi = os.path.join(root, 'NoIrradiation')
+    noi = os.path.join(root, "NoIrradiation")
     r_mkdir(noi)
 
-    template = 'A.json'
+    template = "A.json"
     p = os.path.join(noi, template)
     txt = render.render_template(template)
     util.write(p, txt, overwrite=overwrite)
 
-    prod = os.path.join(noi, 'productions')
+    prod = os.path.join(noi, "productions")
     r_mkdir(prod)
-    template = 'NoIrradiation.json'
+    template = "NoIrradiation.json"
     p = os.path.join(prod, template)
     txt = render.render_template(template)
     util.write(p, txt, overwrite=overwrite)
 
-    p = os.path.join(noi, 'productions.json')
+    p = os.path.join(noi, "productions.json")
     txt = '{"A"; "NoIrradiation"}'
     util.write(p, txt, overwrite=overwrite)
 
-    p = os.path.join(noi, 'chronology.txt')
-    txt = ''
+    p = os.path.join(noi, "chronology.txt")
+    txt = ""
     util.write(p, txt, overwrite=overwrite)
+
 
 # ============= EOF =============================================
