@@ -367,7 +367,9 @@ def _fetch(name, env):
     base = "https://raw.githubusercontent.com/PychronLabsLLC/pychronpackages/main"
     url = f"{base}/{name}"
     resp = requests.get(url)
+    print(resp)
     if resp.status_code == 200:
+        name = os.path.basename(name)
         path = os.path.join(output, name)
         with open(path, "w") as wfile:
             wfile.write(resp.text)
