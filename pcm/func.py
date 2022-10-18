@@ -114,11 +114,11 @@ def _scripts(env, use_ngx, overwrite, verbose):
     post_m_args = "post_measurement", "post_measurement"
 
     for name, filename in (
-            measurement_args,
-            extraction_args,
-            procedure_args,
-            post_eq_args,
-            post_m_args,
+        measurement_args,
+        extraction_args,
+        procedure_args,
+        post_eq_args,
+        post_m_args,
     ):
         _render_template(
             (root, "scripts", name), "example_{}.py".format(filename), overwrite
@@ -134,19 +134,19 @@ def _setupfiles(env, use_ngx, overwrite, verbose):
     sf = util.r_mkdir(root, "setupfiles")
 
     for d, ps, enabled in (
-            ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml"), True),
-            ("extractionline", ("valves.yaml",), True),
-            ("monitors", ("system_monitor.cfg",), True),
+        ("canvas2D", ("canvas.yaml", "canvas_config.xml", "alt_config.xml"), True),
+        ("extractionline", ("valves.yaml",), True),
+        ("monitors", ("system_monitor.cfg",), True),
+        (
+            "devices",
             (
-                    "devices",
-                    (
-                            "ngx_switch_controller.cfg",
-                            "spectrometer_microcontroller.cfg",
-                            "NGXGPActuator.cfg",
-                    ),
-                    use_ngx,
+                "ngx_switch_controller.cfg",
+                "spectrometer_microcontroller.cfg",
+                "NGXGPActuator.cfg",
             ),
-            ("", ("startup_tests.yaml", "experiment_defaults.yaml"), True),
+            use_ngx,
+        ),
+        ("", ("startup_tests.yaml", "experiment_defaults.yaml"), True),
     ):
         if d:
             # out = os.path.join(sf, d)
@@ -182,7 +182,7 @@ def _code(fork, branch, app_id):
 
     if os.path.isdir(ppath):
         if not util.yes(
-                "Pychron source code already exists. Remove and re-clone [y]/n"
+            "Pychron source code already exists. Remove and re-clone [y]/n"
         ):
             shutil.rmtree(ppath)
 
@@ -193,7 +193,7 @@ def _code(fork, branch, app_id):
 
 
 def _launcher(
-        conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
+    conda, environment, app, org, app_id, login, msv, output, overwrite, verbose
 ):
     click.echo("launcher")
 
@@ -276,12 +276,12 @@ def _init(env, org, use_ngx, overwrite, verbose):
     }
 
     for template, ctx, flag in (
-            ("general.ini", gctx, True),
-            ("dvc.ini", {}, True),
-            ("update.ini", uctx, True),
-            ("arar_constants.ini", {}, True),
-            ("extractionline.ini", ectx, True),
-            ("ngx.ini", {}, use_ngx),
+        ("general.ini", gctx, True),
+        ("dvc.ini", {}, True),
+        ("update.ini", uctx, True),
+        ("arar_constants.ini", {}, True),
+        ("extractionline.ini", ectx, True),
+        ("ngx.ini", {}, use_ngx),
     ):
         if flag:
             txt = render.render_template(template, **ctx)
@@ -364,12 +364,13 @@ def _metarepo(name, env, overwrite):
 
 def _fetch(name, env):
     output = os.path.join(HOME, env)
-    base = 'https://raw.githubusercontent.com/PychronLabsLLC/pychronpackages/main'
-    url = f'{base}/{name}'
+    base = "https://raw.githubusercontent.com/PychronLabsLLC/pychronpackages/main"
+    url = f"{base}/{name}"
     resp = requests.get(url)
     if resp.status_code == 200:
         path = os.path.join(output, name)
-        with open(path, 'w') as wfile:
+        with open(path, "w") as wfile:
             wfile.write(resp.text)
+
 
 # ============= EOF =============================================
