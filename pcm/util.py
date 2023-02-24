@@ -89,13 +89,13 @@ def find_prog(prog):
             return out.decode().strip()
 
 
-def r_mkdir(p):
-    if p and not os.path.isdir(p):
-        try:
-            os.mkdir(p)
-        except OSError:
-            r_mkdir(os.path.dirname(p))
-            os.mkdir(p)
+# def r_mkdir(p):
+#     if p and not os.path.isdir(p):
+#         try:
+#             os.mkdir(p)
+#         except OSError:
+#             r_mkdir(os.path.dirname(p))
+#             os.mkdir(p)
 
 
 def handle_check_call(*args, **kw):
