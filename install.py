@@ -1123,7 +1123,6 @@ def main():
         else:
             cfg = ask_config()
             if cfg:
-
                 for func in (
                     install_src,
                     install_setupfiles,
