@@ -30,7 +30,7 @@ from pcm.func import (
     _makefile,
     _spectrometer_init,
     _metarepo,
-    _fetch,
+    _fetch, _conda,
 )
 from pcm.util import echo_config
 
@@ -186,6 +186,18 @@ def login(env, app_id):
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
 def edm(environment, app, verbose):
     _edm(environment, app, verbose)
+
+@cli.command()
+@click.option("--environment", default=None, help="Name of the Conda environment")
+@click.option(
+    "--app",
+    default="pycrunch",
+    help="Application style to install. pycrunch, pyexperiment,...",
+)
+@click.option("--verbose/--no-verbose", default=False, help="Verbose output")
+def conda(environment, app, verbose):
+    _conda(environment, app, verbose)
+
 
 
 @cli.command()

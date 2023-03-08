@@ -50,6 +50,42 @@ EDM_REQUIREMENTS = [
     "cryptography",
 ]
 
+CONDA_REQUIREMENTS = [
+    "chaco",
+    "certifi",
+    "cython",
+    "envisage",
+    "future",
+    "gitpython",
+    "keyring",
+    "jinja2",
+    "lxml",
+    "numpy",
+    "pandas",
+    "patsy",
+    "pillow",
+    "pip",
+    "pyface",
+    "pyparsing",
+    "pyproj",
+    # "pymysql", #edm install 0.7.9 version 1.0.2 or greater required. used pip
+    "pyqt5",
+    "pytables",
+    "pyyaml",
+    "pygments",
+    "qt",
+    "Reportlab",
+    "requests",
+    "scipy",
+    "sqlalchemy",
+    "traits",
+    "xlrd",
+    "xlsxwriter",
+    "xlwt",
+    "statsmodels",
+    "cryptography",
+]
+
 PIP_REQUIREMENTS = ["uncertainties", "qimage2ndarray", "pymysql"]
 VALVE_REQUIREMENTS = ["pyserial", "twisted"]
 PIP_EXTRAS = ["peakutils", "utm"]
