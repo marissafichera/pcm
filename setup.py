@@ -21,7 +21,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="pychron-cm",
-    version="0.3.24",
+    version="0.3.25",
     author="Jake Ross",
     description="Pychron configuration manager",
     long_description=long_description,
@@ -31,7 +31,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    install_requires=["Click", "pyyaml"],
+    install_requires=["Click", "pyyaml", "gitpython"],
     entry_points={
         "console_scripts": [
             "pcm = pcm.cli:cli",
