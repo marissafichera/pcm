@@ -43,8 +43,7 @@ EDM_REQUIREMENTS = [
     "scipy",
     "sqlalchemy>=1.3.0,<1.4.0",
     "traits>=6.3.0,<6.7.0",
-    "traitsui>=7.4.0,<7.5.0"
-    "xlrd",
+    "traitsui>=7.4.0,<7.5.0" "xlrd",
     "xlsxwriter",
     "xlwt",
     "statsmodels",
@@ -74,17 +73,18 @@ CONDA_REQUIREMENTS = [
     "xlsxwriter",
     "xlwt",
     "statsmodels",
-    "google_auth_oauthlib"
+    "google_auth_oauthlib",
 ]
 
-PIP_REQUIREMENTS = ["uncertainties",
-                    "qimage2ndarray",
-                    "pymysql==0.7.9",
-                    "envisage",
-                    "chaco",
-                    "traitsui",
-                    "traits"
-                    ]
+PIP_REQUIREMENTS = [
+    "uncertainties",
+    "qimage2ndarray",
+    "pymysql==0.7.9",
+    "envisage",
+    "chaco",
+    "traitsui",
+    "traits",
+]
 
 VALVE_REQUIREMENTS = ["pyserial", "twisted"]
 PIP_EXTRAS = ["peakutils", "utm"]

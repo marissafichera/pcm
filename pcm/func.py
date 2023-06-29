@@ -37,7 +37,6 @@ PYTHON_EXECUTABLE_ROOT = os.path.join(HOME, "miniconda3", "envs")
 # EDM_BIN = os.path.join(EDM_ENVS_ROOT, "edm", "bin")
 
 
-
 def _login(env, app_id):
     # write the user
     root = os.path.join(HOME, f".pychron.{app_id}")
@@ -65,7 +64,6 @@ def _conda(environment, app, verbose):
     click.secho("conda install", bold=True, fg="green")
     req = requirements.CONDA_REQUIREMENTS
     pip_req = requirements.PIP_REQUIREMENTS
-
 
     if app == "pyvalve":
         req.extend(requirements.VALVE_REQUIREMENTS)
@@ -433,11 +431,12 @@ def _req():
     """
 
     # conda
-    c = ' '.join(CONDA_REQUIREMENTS)
-    click.secho(f'>>>>  conda install {c}', fg='green')
+    c = " ".join(CONDA_REQUIREMENTS)
+    click.secho(f">>>>  conda install {c}", fg="green")
     print()
     # pip
-    p = ' '.join(PIP_REQUIREMENTS)
-    click.secho(f'>>>>> pip install {p}', fg='green')
+    p = " ".join(PIP_REQUIREMENTS)
+    click.secho(f">>>>> pip install {p}", fg="green")
+
 
 # ============= EOF =============================================

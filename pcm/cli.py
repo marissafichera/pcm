@@ -31,7 +31,8 @@ from pcm.func import (
     _spectrometer_init,
     _metarepo,
     _fetch,
-    _conda, _req,
+    _conda,
+    _req,
 )
 from pcm.util import echo_config
 
@@ -150,18 +151,36 @@ def wizard(
     )
     click.secho("Install the pychron application", bold="True", fg="green")
 
-    for sent, func, args in ((use_src, _code, (fork, branch, app_id)),
-                             (use_init, _init, (env, org, use_ngx, overwrite, verbose)),
-                             (use_setupfiles, _setupfiles, (env, use_ngx, overwrite, verbose)),
-                             (conda, _conda, (env, app, overwrite, verbose)),
-                             (use_launcher, _launcher, (conda, environment, app, fork, app_id, login, msv, None, overwrite, verbose)),
-                             (use_login, _login, (env, app_id))):
+    for sent, func, args in (
+        (use_src, _code, (fork, branch, app_id)),
+        (use_init, _init, (env, org, use_ngx, overwrite, verbose)),
+        (use_setupfiles, _setupfiles, (env, use_ngx, overwrite, verbose)),
+        (conda, _conda, (env, app, overwrite, verbose)),
+        (
+            use_launcher,
+            _launcher,
+            (
+                conda,
+                environment,
+                app,
+                fork,
+                app_id,
+                login,
+                msv,
+                None,
+                overwrite,
+                verbose,
+            ),
+        ),
+        (use_login, _login, (env, app_id)),
+    ):
         print(sent, func, args)
         if sent:
             try:
                 func(*args)
             except BaseException as e:
                 import traceback
+
                 traceback.print_exc()
 
     # if use_src:
