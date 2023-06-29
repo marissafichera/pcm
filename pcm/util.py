@@ -25,7 +25,7 @@ def yes(msg):
     if not msg.endswith(" "):
         msg = "{} ".format(msg)
 
-    return input(msg) in ("", "y", "yes", "Yes", "YES")
+    return input(msg).strip() in ("", "y", "yes", "Yes", "YES")
 
 
 def r_mkdir(p, *args):
@@ -64,10 +64,10 @@ def write(p, t, overwrite=False, verbose=False):
         click.secho(f"file already exists skipping: {p}", fg="red")
 
 
-def echo_config(*args):
+def echo_config(**kwargs):
     click.secho("------------ Configuration -------------", fg="yellow")
-    for a in args:
-        click.secho(f"={a}", fg="yellow")
+    for k, v in kwargs.items():
+        click.secho(f"{k:10s}= {v}", fg="yellow")
     click.secho("------------ Configuration End -------------", fg="yellow")
 
 

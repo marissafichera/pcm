@@ -34,7 +34,7 @@ from pcm.func import (
     _conda,
     _req,
 )
-from pcm.util import echo_config
+from pcm.util import echo_config, yes
 
 
 @click.group()
@@ -129,49 +129,39 @@ def wizard(
     verbose,
 ):
     echo_config(
-        app,
-        conda,
-        use_src,
-        app_id,
-        fork,
-        org,
-        branch,
-        use_setupfiles,
-        use_init,
-        env,
-        use_edm,
-        environment,
-        use_launcher,
-        use_login,
-        login,
-        msv,
-        overwrite,
-        use_ngx,
-        verbose,
+        application=app,
+        use_conda=conda,
+        clone_src=use_src,
+        app_id=app_id,
+        fork=fork,
+        org=org,
+        branck=branch,
+        install_setupfiles=use_setupfiles,
+        install_init=init,
+        pychron_root=env,
+        use_edm=use_edm,
+        python_environment=environment,
+        install_launcher=use_launcher,
+        write_login_defaults=use_login,
+        show_login_at_startup=login,
+        massspec_version=msv,
+        overwrite=overwrite,
+        install_ngx_setupfiles=use_ngx,
+        verbose=verbose,
     )
     click.secho("Install the pychron application", bold="True", fg="green")
+
+    if not yes("OK to proceed?"):
+        click.echo("Aborting", fg="red")
+        return
 
     for sent, func, args in (
         (use_src, _code, (fork, branch, app_id)),
         (use_init, _init, (env, org, use_ngx, overwrite, verbose)),
         (use_setupfiles, _setupfiles, (env, use_ngx, overwrite, verbose)),
         (conda, _conda, (env, app, overwrite, verbose)),
-        (
-            use_launcher,
-            _launcher,
-            (
-                conda,
-                environment,
-                app,
-                fork,
-                app_id,
-                login,
-                msv,
-                None,
-                overwrite,
-                verbose,
-            ),
-        ),
+        (use_launcher, _launcher, (conda, environment, app, fork, app_id,
+                                    login, msv, None, overwrite, verbose)),
         (use_login, _login, (env, app_id)),
     ):
         print(sent, func, args)
