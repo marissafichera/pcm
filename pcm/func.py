@@ -26,13 +26,16 @@ import yaml
 from git import Repo
 
 from pcm import util, requirements, render
+from pcm.requirements import CONDA_REQUIREMENTS, PIP_REQUIREMENTS
 from pcm.util import find_prog, handle_check_call, r_mkdir
 
 IS_MAC = platform.system() == "Darwin"
 IS_WINDOWS = platform.system() == "Windows"
 HOME = os.path.expanduser("~")
-EDM_ENVS_ROOT = os.path.join(HOME, ".edm", "envs")
-EDM_BIN = os.path.join(EDM_ENVS_ROOT, "edm", "bin")
+PYTHON_EXECUTABLE_ROOT = os.path.join(HOME, "miniconda3", "envs")
+# EDM_ENVS_ROOT = os.path.join(HOME, ".edm", "envs")
+# EDM_BIN = os.path.join(EDM_ENVS_ROOT, "edm", "bin")
+
 
 
 def _login(env, app_id):
@@ -63,35 +66,40 @@ def _conda(environment, app, verbose):
     req = requirements.CONDA_REQUIREMENTS
     pip_req = requirements.PIP_REQUIREMENTS
 
+
     if app == "pyvalve":
         req.extend(requirements.VALVE_REQUIREMENTS)
     else:
         pip_req.extend(requirements.PIP_EXTRAS)
 
-    cmdargs = ["edm", "install", "-y"] + req
-    active_python = os.path.join(HOME, ".edm")
+    active_python = os.path.join(HOME, "miniconda3")
     if environment:
+        cmdargs = ["conda", "create", "-y", "-n", environment] + req
         active_python = os.path.join(
             active_python, "envs", environment, "bin", "python"
         )
-        cmdargs.extend(["--environment", environment])
-
-        handle_check_call(["edm", "environments", "create", environment])
     else:
-        active_python = os.path.join(active_python, "bin", "python")
-
+        cmdargs = ["conda", "install", "-y"] + req
+        # cmdargs.extend(["--environment", environment])
+    #
+    #     handle_check_call(["edm", "environments", "create", environment])
+    # else:
+    #     active_python = os.path.join(active_python, "bin", "python")
+    #
     if verbose:
         click.echo(f'requirements: {" ".join(req)}')
         click.echo(f'command: {" ".join(cmdargs)}')
 
-    handle_check_call(cmdargs)
+    if cmdargs:
+        handle_check_call(cmdargs)
+
     handle_check_call(
         [
             active_python,
             "-m",
             "pip",
             "install",
-            "--no-dependencies",
+            # "--no-dependencies",
         ]
         + pip_req
     )
@@ -251,8 +259,10 @@ def _launcher(
         "app_id": app_id,
         "use_login": login,
         "massspec_db_version": msv,
-        "edm_envs_root": EDM_ENVS_ROOT,
-        "edm_env": environment,
+        # "edm_envs_root": EDM_ENVS_ROOT,
+        # "edm_env": environment,
+        "python_executable_root": PYTHON_EXECUTABLE_ROOT,
+        "env": environment,
         "pychron_path": os.path.join(HOME, f".pychron.{app_id}", "pychron"),
         "update_db": 0,
         "alembic_url": "",
@@ -415,5 +425,19 @@ def _fetch(name, env):
         with open(path, "w") as wfile:
             wfile.write(resp.text)
 
+
+def _req():
+    """
+    print the requirements list as string for pasting into the command line
+    :return:
+    """
+
+    # conda
+    c = ' '.join(CONDA_REQUIREMENTS)
+    click.secho(f'>>>>  conda install {c}', fg='green')
+    print()
+    # pip
+    p = ' '.join(PIP_REQUIREMENTS)
+    click.secho(f'>>>>> pip install {p}', fg='green')
 
 # ============= EOF =============================================

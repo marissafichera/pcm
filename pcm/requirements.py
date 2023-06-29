@@ -15,7 +15,7 @@
 # ===============================================================================
 
 EDM_REQUIREMENTS = [
-    "chaco",
+    "chaco>=5.0.0,<5.1.0",
     "certifi",
     "cython",
     "envisage",
@@ -41,8 +41,9 @@ EDM_REQUIREMENTS = [
     "Reportlab",
     "requests",
     "scipy",
-    "sqlalchemy",
-    "traits",
+    "sqlalchemy>=1.3.0,<1.4.0",
+    "traits>=6.3.0,<6.7.0",
+    "traitsui>=7.4.0,<7.5.0"
     "xlrd",
     "xlsxwriter",
     "xlwt",
@@ -51,42 +52,40 @@ EDM_REQUIREMENTS = [
 ]
 
 CONDA_REQUIREMENTS = [
-    "chaco",
-    "certifi",
+    # "chaco",
     "cython",
-    "envisage",
-    "future",
     "gitpython",
-    "keyring",
     "jinja2",
     "lxml",
     "numpy",
-    "pandas",
-    "patsy",
     "pillow",
     "pip",
-    "pyface",
     "pyparsing",
     "pyproj",
-    # "pymysql", #edm install 0.7.9 version 1.0.2 or greater required. used pip
     "pyqt5",
     "pytables",
     "pyyaml",
     "pygments",
-    "qt",
     "Reportlab",
     "requests",
     "scipy",
     "sqlalchemy",
-    "traits",
     "xlrd",
     "xlsxwriter",
     "xlwt",
     "statsmodels",
-    "cryptography",
+    "google_auth_oauthlib"
 ]
 
-PIP_REQUIREMENTS = ["uncertainties", "qimage2ndarray", "pymysql"]
+PIP_REQUIREMENTS = ["uncertainties",
+                    "qimage2ndarray",
+                    "pymysql==0.7.9",
+                    "envisage",
+                    "chaco",
+                    "traitsui",
+                    "traits"
+                    ]
+
 VALVE_REQUIREMENTS = ["pyserial", "twisted"]
 PIP_EXTRAS = ["peakutils", "utm"]
 

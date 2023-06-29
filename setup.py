@@ -31,7 +31,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    install_requires=["Click", "pyyaml", "gitpython"],
+    install_requires=["Click", "pyyaml", "gitpython", "requests"],
     entry_points={
         "console_scripts": [
             "pcm = pcm.cli:cli",
