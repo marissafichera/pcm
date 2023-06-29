@@ -23,7 +23,9 @@ import platform
 
 def yes(msg):
     if not msg.endswith(" "):
-        msg = "{} ".format(msg)
+        msg = f"{msg} "
+
+    msg = f'{msg} [y]/n: '
 
     return input(msg).strip() in ("", "y", "yes", "Yes", "YES")
 
@@ -67,7 +69,7 @@ def write(p, t, overwrite=False, verbose=False):
 def echo_config(**kwargs):
     click.secho("------------ Configuration -------------", fg="yellow")
     for k, v in kwargs.items():
-        click.secho(f"{k:10s}= {v}", fg="yellow")
+        click.secho(f"{k:25s}= {v}", fg="yellow")
     click.secho("------------ Configuration End -------------", fg="yellow")
 
 

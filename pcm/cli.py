@@ -137,7 +137,7 @@ def wizard(
         org=org,
         branck=branch,
         install_setupfiles=use_setupfiles,
-        install_init=init,
+        install_init=use_init,
         pychron_root=env,
         use_edm=use_edm,
         python_environment=environment,
@@ -152,7 +152,7 @@ def wizard(
     click.secho("Install the pychron application", bold="True", fg="green")
 
     if not yes("OK to proceed?"):
-        click.echo("Aborting", fg="red")
+        click.secho("Aborting", fg="red")
         return
 
     for sent, func, args in (
