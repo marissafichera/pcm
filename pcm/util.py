@@ -25,7 +25,7 @@ def yes(msg):
     if not msg.endswith(" "):
         msg = f"{msg} "
 
-    msg = f'{msg} [y]/n: '
+    msg = f"{msg} [y]/n: "
 
     return input(msg).strip() in ("", "y", "yes", "Yes", "YES")
 
