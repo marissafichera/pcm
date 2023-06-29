@@ -160,8 +160,22 @@ def wizard(
         (use_init, _init, (env, org, use_ngx, overwrite, verbose)),
         (use_setupfiles, _setupfiles, (env, use_ngx, overwrite, verbose)),
         (conda, _conda, (env, app, overwrite, verbose)),
-        (use_launcher, _launcher, (conda, environment, app, fork, app_id,
-                                    login, msv, None, overwrite, verbose)),
+        (
+            use_launcher,
+            _launcher,
+            (
+                conda,
+                environment,
+                app,
+                fork,
+                app_id,
+                login,
+                msv,
+                None,
+                overwrite,
+                verbose,
+            ),
+        ),
         (use_login, _login, (env, app_id)),
     ):
         print(sent, func, args)
