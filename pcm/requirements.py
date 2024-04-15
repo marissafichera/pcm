@@ -74,7 +74,7 @@ CONDA_REQUIREMENTS = [
     "xlwt",
     "statsmodels",
     "pymysql",
-    "envisage"
+    "envisage",
 ]
 
 # PIP_REQUIREMENTS = [
@@ -90,7 +90,8 @@ CONDA_REQUIREMENTS = [
 PIP_REQUIREMENTS = [
     "uncertainties",
     "qimage2ndarray",
-    "requests_oauthlib",]
+    "requests_oauthlib",
+]
 
 VALVE_REQUIREMENTS = ["pyserial", "twisted"]
 PIP_EXTRAS = ["peakutils", "utm"]

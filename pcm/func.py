@@ -59,6 +59,7 @@ def _login(env, app_id):
     }
     util.write(environment_file, yaml.dump(t))
 
+
 def _conda(environment, app, verbose):
     click.secho("conda install", bold=True, fg="green")
     req = requirements.CONDA_REQUIREMENTS
@@ -69,19 +70,17 @@ def _conda(environment, app, verbose):
     else:
         pip_req.extend(requirements.PIP_EXTRAS)
 
-    active_python = 'python'
+    active_python = "python"
     if environment:
         cmdargs = ["conda", "create", "-y", "-n", environment] + req
 
         # active_conda e.g. /home/ross/miniconda3/bin/conda
         root = conda_root()
 
-        active_python = os.path.join(
-            root, "envs", environment, "bin", "python"
-        )
+        active_python = os.path.join(root, "envs", environment, "bin", "python")
     else:
         cmdargs = ["conda", "install", "-y"] + req
-        
+
     if verbose:
         click.echo(f'requirements: {" ".join(req)}')
         click.echo(f'command: {" ".join(cmdargs)}')
@@ -90,8 +89,9 @@ def _conda(environment, app, verbose):
         handle_check_call(cmdargs)
 
         # install chaco
-        handle_check_call(['conda', 'install', '-y', '-n', environment, '-c', 'dbanas', 'chaco'])
-
+        handle_check_call(
+            ["conda", "install", "-y", "-n", environment, "-c", "dbanas", "chaco"]
+        )
 
     handle_check_call(
         [
@@ -228,9 +228,7 @@ def _code(fork, branch, app_id):
         os.mkdir(update_root)
 
     if os.path.isdir(ppath):
-        if util.yes(
-            "Pychron source code already exists. Remove and re-clone"
-        ):
+        if util.yes("Pychron source code already exists. Remove and re-clone"):
             shutil.rmtree(ppath)
 
     url = f"https://github.com/{fork}/pychron.git"
@@ -252,8 +250,6 @@ def _launcher(
     else:
         template = "launcher_pc"
         output = "pychron_launcher.bat"
-
-
 
     ctx = {
         "github_org": org,

@@ -62,9 +62,7 @@ def device(template, name):
 @click.option("--conda/--no-conda", default=False, help="Use Conda")
 @click.option("--src/--no-src", "use_src", default=True, help="install the source code")
 @click.option("--app_id", default=0, help="set the app id")
-@click.option(
-    "--fork", default="NMGRL", help="Name of the pychron fork to clone"
-)
+@click.option("--fork", default="NMGRL", help="Name of the pychron fork to clone")
 @click.option(
     "--org",
     default="NMGRL",
@@ -119,7 +117,7 @@ def wizard(
     app_id,
     fork,
     org,
-        data_org,
+    data_org,
     branch,
     use_setupfiles,
     use_init,
