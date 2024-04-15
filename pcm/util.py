@@ -91,6 +91,8 @@ def find_prog(prog):
             return out.decode().strip()
 
 
+def conda_root():
+    return os.path.dirname(os.path.dirname(find_prog("conda")))
 # def r_mkdir(p):
 #     if p and not os.path.isdir(p):
 #         try:

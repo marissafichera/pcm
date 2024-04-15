@@ -1,9 +1,0 @@
-[General]
-[Communications]
-type=ethernet
-kind=TCP
-host=
-port=1099
-write_terminator=CRLF
-use_end=False
-strip=False

@@ -51,6 +51,7 @@ EDM_REQUIREMENTS = [
 ]
 
 CONDA_REQUIREMENTS = [
+    "python=3.10",
     # "chaco",
     "cython",
     "gitpython",
@@ -61,7 +62,6 @@ CONDA_REQUIREMENTS = [
     "pip",
     "pyparsing",
     "pyproj",
-    "pyqt5",
     "pytables",
     "pyyaml",
     "pygments",
@@ -73,18 +73,24 @@ CONDA_REQUIREMENTS = [
     "xlsxwriter",
     "xlwt",
     "statsmodels",
-    "google_auth_oauthlib",
+    "pymysql",
+    "envisage"
 ]
+
+# PIP_REQUIREMENTS = [
+#     "uncertainties",
+#     "qimage2ndarray",
+#     "pymysql==0.7.9",
+#     "envisage",
+#     "chaco",
+#     "traitsui",
+#     "traits",
+# ]
 
 PIP_REQUIREMENTS = [
     "uncertainties",
     "qimage2ndarray",
-    "pymysql==0.7.9",
-    "envisage",
-    "chaco",
-    "traitsui",
-    "traits",
-]
+    "requests_oauthlib",]
 
 VALVE_REQUIREMENTS = ["pyserial", "twisted"]
 PIP_EXTRAS = ["peakutils", "utm"]

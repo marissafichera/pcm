@@ -63,12 +63,17 @@ def device(template, name):
 @click.option("--src/--no-src", "use_src", default=True, help="install the source code")
 @click.option("--app_id", default=0, help="set the app id")
 @click.option(
-    "--fork", default="PychronLabsLLC", help="Name of the pychron fork to clone"
+    "--fork", default="NMGRL", help="Name of the pychron fork to clone"
 )
 @click.option(
     "--org",
     default="NMGRL",
     help="Github organization for storing laboratory files such as Plot Options",
+)
+@click.option(
+    "--data-org",
+    default="NMGRLData",
+    help="Github organization for storing data",
 )
 @click.option("--branch", default="dev/dr", help="Name of the pychron fork to clone")
 @click.option(
@@ -114,6 +119,7 @@ def wizard(
     app_id,
     fork,
     org,
+        data_org,
     branch,
     use_setupfiles,
     use_init,
@@ -135,6 +141,7 @@ def wizard(
         app_id=app_id,
         fork=fork,
         org=org,
+        data_org=data_org,
         branck=branch,
         install_setupfiles=use_setupfiles,
         install_init=use_init,
@@ -157,9 +164,9 @@ def wizard(
 
     for sent, func, args in (
         (use_src, _code, (fork, branch, app_id)),
-        (use_init, _init, (env, org, use_ngx, overwrite, verbose)),
+        (use_init, _init, (env, org, data_org, use_ngx, overwrite, verbose)),
         (use_setupfiles, _setupfiles, (env, use_ngx, overwrite, verbose)),
-        (conda, _conda, (env, app, overwrite, verbose)),
+        (conda, _conda, (environment, app, verbose)),
         (
             use_launcher,
             _launcher,
@@ -270,13 +277,18 @@ def scripts(env, use_ngx, overwrite, verbose):
     default="NMGRL",
     help="Github organization for storing laboratory files such as Plot Options",
 )
+@click.option(
+    "--data-org",
+    default="NMGRLData",
+    help="Github organization for storing data",
+)
 @click.option("--use_ngx/--no-ngx", default=False, help="Install NGX")
 @click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
-def buildenv(env, org, use_ngx, overwrite, verbose):
-    _init(env, org, use_ngx, overwrite, verbose)
+def buildenv(env, org, data_org, use_ngx, overwrite, verbose):
+    _init(env, org, data_org, use_ngx, overwrite, verbose)
     _setupfiles(env, use_ngx, overwrite, verbose)
     _scripts(env, use_ngx, overwrite, verbose)
 
@@ -319,13 +331,18 @@ def launcher(
     default="NMGRL",
     help="Github organization for storing laboratory files such as Plot Options",
 )
+@click.option(
+    "--data-org",
+    default="NMGRLData",
+    help="Github organization for storing data",
+)
 @click.option("--use_ngx/--no-ngx", default=False, help="Install NGX")
 @click.option(
     "--overwrite/--no-overwrite", default=False, help="Overwrite the file if it exists"
 )
 @click.option("--verbose/--no-verbose", default=False, help="Verbose output")
-def init(env, org, use_ngx, overwrite, verbose):
-    _init(env, org, use_ngx, overwrite, verbose)
+def init(env, org, data_org, use_ngx, overwrite, verbose):
+    _init(env, org, data_org, use_ngx, overwrite, verbose)
 
 
 @cli.command()

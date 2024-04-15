@@ -27,7 +27,7 @@ from git import Repo
 
 from pcm import util, requirements, render
 from pcm.requirements import CONDA_REQUIREMENTS, PIP_REQUIREMENTS
-from pcm.util import find_prog, handle_check_call, r_mkdir
+from pcm.util import find_prog, handle_check_call, r_mkdir, conda_root
 
 IS_MAC = platform.system() == "Darwin"
 IS_WINDOWS = platform.system() == "Windows"
@@ -59,7 +59,6 @@ def _login(env, app_id):
     }
     util.write(environment_file, yaml.dump(t))
 
-
 def _conda(environment, app, verbose):
     click.secho("conda install", bold=True, fg="green")
     req = requirements.CONDA_REQUIREMENTS
@@ -70,26 +69,29 @@ def _conda(environment, app, verbose):
     else:
         pip_req.extend(requirements.PIP_EXTRAS)
 
-    active_python = os.path.join(HOME, "miniconda3")
+    active_python = 'python'
     if environment:
         cmdargs = ["conda", "create", "-y", "-n", environment] + req
+
+        # active_conda e.g. /home/ross/miniconda3/bin/conda
+        root = conda_root()
+
         active_python = os.path.join(
-            active_python, "envs", environment, "bin", "python"
+            root, "envs", environment, "bin", "python"
         )
     else:
         cmdargs = ["conda", "install", "-y"] + req
-        # cmdargs.extend(["--environment", environment])
-    #
-    #     handle_check_call(["edm", "environments", "create", environment])
-    # else:
-    #     active_python = os.path.join(active_python, "bin", "python")
-    #
+        
     if verbose:
         click.echo(f'requirements: {" ".join(req)}')
         click.echo(f'command: {" ".join(cmdargs)}')
 
     if cmdargs:
         handle_check_call(cmdargs)
+
+        # install chaco
+        handle_check_call(['conda', 'install', '-y', '-n', environment, '-c', 'dbanas', 'chaco'])
+
 
     handle_check_call(
         [
@@ -226,8 +228,8 @@ def _code(fork, branch, app_id):
         os.mkdir(update_root)
 
     if os.path.isdir(ppath):
-        if not util.yes(
-            "Pychron source code already exists. Remove and re-clone [y]/n"
+        if util.yes(
+            "Pychron source code already exists. Remove and re-clone"
         ):
             shutil.rmtree(ppath)
 
@@ -251,6 +253,8 @@ def _launcher(
         template = "launcher_pc"
         output = "pychron_launcher.bat"
 
+
+
     ctx = {
         "github_org": org,
         "app_name": app,
@@ -259,8 +263,10 @@ def _launcher(
         "massspec_db_version": msv,
         # "edm_envs_root": EDM_ENVS_ROOT,
         # "edm_env": environment,
-        "python_executable_root": PYTHON_EXECUTABLE_ROOT,
-        "env": environment,
+        # "python_executable_root": PYTHON_EXECUTABLE_ROOT,
+        # "env": environment,
+        "conda_env_name": environment,
+        "conda_distro": conda_root(),
         "pychron_path": os.path.join(HOME, f".pychron.{app_id}", "pychron"),
         "update_db": 0,
         "alembic_url": "",
@@ -293,7 +299,7 @@ def _email(env, overwrite):
     util.write(p, txt, overwrite=overwrite)
 
 
-def _init(env, org, use_ngx, overwrite, verbose):
+def _init(env, org, data_org, use_ngx, overwrite, verbose):
     click.echo("make initialization file")
     template = "initialization.xml"
     txt = render.render_template(template)
@@ -326,7 +332,7 @@ def _init(env, org, use_ngx, overwrite, verbose):
 
     for template, ctx, flag in (
         ("general.ini", gctx, True),
-        ("dvc.ini", {}, True),
+        ("dvc.ini", {"org": data_org}, True),
         ("update.ini", uctx, True),
         ("arar_constants.ini", {}, True),
         ("extractionline.ini", ectx, True),
